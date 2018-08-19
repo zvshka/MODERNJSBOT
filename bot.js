@@ -8,7 +8,7 @@ const event = require('./commands/memberJoined')
 const fetch = require('node-fetch')
 const bannedwords = require('./utils/bannedwords.json')
 
-let coins = require("./utils/coins.json");
+let coins = JSON.parse(fs.readFileSync("./utils/coins.json", "utf8"));
 let cooldown = new Set();
 let cdseconds = 5;
 
@@ -112,6 +112,7 @@ bot.on("message", message => {
     })
     .then(res => res.json())
     .then(json => console.log(json))
+    
     let coinEmbed = new Discord.RichEmbed()
       .setAuthor(message.author.username)
       .setColor("#3de2fa")

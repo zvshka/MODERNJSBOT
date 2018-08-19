@@ -1,6 +1,8 @@
 const Discord = require("discord.js");
 const fs = require("fs");
-let coins = require("../utils/coins.json");
+let coins = JSON.parse(fs.readFileSync("./utils/coins.json", "utf8"));
+
+
 
 module.exports.run = (bot, message, args) => {
   //!pay @isatisfied 59345
