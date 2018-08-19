@@ -5,7 +5,7 @@ const fs = require("fs");
 
 
 module.exports.run = (bot, message, args) => {
-  var botconfig = require('../utils/botconfig.json')
+  var botconfig = require('..1/utils/botconfig.json')
   let prefixes = JSON.parse(fs.readFileSync("./utils/prefixes.json", "utf8"));
   let autorole = JSON.parse(fs.readFileSync('./utils/autoroles.json', 'utf8'))
   if(!autorole[message.guild.id]) autorole[message.guild.id] = {
