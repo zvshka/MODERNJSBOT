@@ -42,7 +42,13 @@ module.exports.run = (bot, message, args) => {
     if(err) cosole.log(err)
   });
 
-
+  fetch(`${process.env.COINS_URL}`,  { 
+    method: 'PUT',
+    body:    JSON.stringify(coins),
+    headers: { 'Content-Type': 'application/json' },
+  })
+  .then(res => res.json())
+  .then(json => console.log(json))
 }
 
 module.exports.help = {
