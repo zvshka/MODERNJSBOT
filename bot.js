@@ -8,7 +8,7 @@ const event = require('./commands/memberJoined')
 const fetch = require('node-fetch')
 const bannedwords = require('./utils/bannedwords.json')
 
-let coins = JSON.parse(fs.readFileSync("./utils/coins.json", "utf8"));
+//let coins = JSON.parse(fs.readFileSync("./utils/coins.json", "utf8"));
 let cooldown = new Set();
 let cdseconds = 5;
 
@@ -85,6 +85,7 @@ bot.on("message", message => {
     };
   }
   //Монетки :D
+  let coins = JSON.parse(fs.readFileSync("./utils/coins.json", "utf8"))
   if (!coins[message.author.id]) {
     coins[message.author.id] = {
       coins: 0
