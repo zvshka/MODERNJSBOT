@@ -40,7 +40,7 @@ module.exports.run = async (bot, message, args) => {
     if (err) console.log(err)
   });
    
-  fetch(`${process.env.URL}`,  { 
+  fetch(`${process.env.WARNS_URL}`,  { 
     method: 'PUT',
     body:    JSON.stringify(warns),
     headers: { 'Content-Type': 'application/json' },
