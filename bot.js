@@ -66,7 +66,7 @@ bot.once("ready", () => {
     .then(res => res.json())
     .then(roles => fs.writeFile("./utils/autoroles.json", JSON.stringify(roles), (err) => {
       if (err) console.log(err);
-      console.log("Варны загружены")
+      console.log("Roles загружены")
   }));
 
 })
