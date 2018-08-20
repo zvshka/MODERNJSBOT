@@ -8,7 +8,10 @@ module.exports.run = (bot, message, args) => {
   message.channel.bulkDelete(args[0], true).then(() => {
     message.channel.send({embed: {
       color : 0x00a8ff,
-      description: (`Удалено ${args[0]}`)
+      fields: [{
+        name: "Успех",
+        value: (`Удалено ${args[0]}`)
+      }]
     }}).then(msg => msg.delete(5000));
   });
 }
