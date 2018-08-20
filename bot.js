@@ -7,7 +7,7 @@ bot.commands = new Discord.Collection();
 const event = require('./commands/memberJoined')
 const fetch = require('node-fetch')
 const bannedwords = require('./utils/bannedwords.json')
-
+const R6Api = require('r6-discord');
 //let coins = JSON.parse(fs.readFileSync("./utils/coins.json", "utf8"));
 let cooldown = new Set();
 let cdseconds = 5;
