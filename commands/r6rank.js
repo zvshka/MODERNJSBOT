@@ -1,11 +1,10 @@
 const R6Api = require('r6-discord');
 const R6 = new R6Api();
 
-const username = args[0];
-const platform = args[1];
-
 
 module.exports.run = async (bot, message, args) => { // Get stats on a user on that platform.
+    const username = args[0];
+    const platform = args[1];
     
     R6.stats(username, platform, /* Optional Boolean if you want operator stats. */ ).then(response => {
         console.log(response);
