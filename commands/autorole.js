@@ -31,8 +31,8 @@ module.exports.run = (bot, message, args) => {
     }
     
     if(args[0] === 'on') {
-        let rolees = args.join(" ").slice(3)
-        let role = message.guild.roles.find("name", rolees)
+        let roles = args.join(" ").slice(3)
+        let role = message.guild.roles.find(r => r.name === roles)
         autorole[message.guild.id] = {
             role: role.name
         }

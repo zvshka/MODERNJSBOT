@@ -6,3 +6,4 @@ commands/rainbow.js
 commands/multicolors.js
 commands/voting.js
 site/
+utils/packages.js

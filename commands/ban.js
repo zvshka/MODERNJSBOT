@@ -24,7 +24,7 @@ module.exports.run = async (bot, message, args) => {
     .addField("Время", message.createdAt)
     .addField("Причина", bReason);
 
-    let incidentchannel = message.guild.channels.find(`name`, "logs");
+    let incidentchannel = message.guild.channels.find(c => c.name === 'logs');
     if(!incidentchannel) return message.channel.send("Не найден канал.").then(msg => {msg.delete(5000)});
 
     message.guild.member(bUser).ban(bReason);

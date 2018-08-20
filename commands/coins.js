@@ -1,9 +1,10 @@
 const Discord = require("discord.js");
-const fs = require('fs')
-let coins = JSON.parse(fs.readFileSync("./utils/coins.json", "utf8"));;
+const fs = require('fs');
 
 module.exports.run = (bot, message, args) => {
   //!coins
+  let coins = JSON.parse(fs.readFileSync("./utils/coins.json", "utf8"))
+  
   if(!coins[message.author.id]){
     coins[message.author.id] = {
       coins: 0

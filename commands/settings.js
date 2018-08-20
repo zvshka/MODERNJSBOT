@@ -18,7 +18,7 @@ module.exports.run = (bot, message, args) => {
     };
   }
 
-  let logs = message.guild.channels.find(`name`, "logs")
+  let logs = message.guild.channels.find(c => c.name === 'logs')
 
   let testembed = new Discord.RichEmbed()
     .addField("Префикс", prefixes[message.guild.id].prefixes, true)
