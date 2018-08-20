@@ -12,9 +12,9 @@ module.exports.run = async (bot, message, args) => {
   if (!rMember) return errors.cantfindUser(message.channel);
   let role = "Собеседуемый";
   if (!role) return message.reply("Роль!");
-  let gRole = message.guild.roles.find(c => c.name === role);
+  let gRole = message.guild.roles.find(r => r.name === role);
   if (!gRole) return message.reply("Роль не найдена.");
-  let dRole = message.guild.roles.find(c => c.name === 'Гость')
+  let dRole = message.guild.roles.find(r => r.name === 'Гость')
   if (rMember.roles.has(dRole.id))
   await (rMember.removeRole(dRole.id)).catch
   if (rMember.roles.has(gRole.id)) return message.reply("Роль имеется.");

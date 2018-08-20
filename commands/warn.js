@@ -1,11 +1,11 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 const ms = require("ms");
-let warns = JSON.parse(fs.readFileSync("./utils/warnings.json", "utf8"));
 const errors = require('../utils/errors')
 const fetch = require('node-fetch')
 
 module.exports.run = async (bot, message, args) => {
+  let warns = JSON.parse(fs.readFileSync("./utils/warnings.json", "utf8"));
   if (!message.member.hasPermission("ADMINISTRATOR")) return errors.noPerms(message, "ADMINISTRATOR").then(msg => {
     msg.delete(5000)
   });
