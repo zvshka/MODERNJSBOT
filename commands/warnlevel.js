@@ -1,12 +1,9 @@
 const Discord = require("discord.js");
 const fs = require("fs");
-const ms = require("ms");
-let warns = JSON.parse(fs.readFileSync("./utils/warnings.json", "utf8"));
-const errors = require('../utils/errors')
 
 
 module.exports.run = async (bot, message, args) => {  
-
+  let warns = JSON.parse(fs.readFileSync("./utils/warnings.json", "utf8"));
   let wUser = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0])
   if(!wUser) return message.channel.send({embed: {
     color: 0x00a8ff,
