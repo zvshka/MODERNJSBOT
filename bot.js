@@ -7,8 +7,9 @@ bot.commands = new Discord.Collection();
 const event = require('./commands/memberJoined')
 const fetch = require('node-fetch')
 const bannedwords = require('./utils/bannedwords.json')
-const R6Api = require('r6-discord');
 //let coins = JSON.parse(fs.readFileSync("./utils/coins.json", "utf8"));
+const enves = require('dotenv').config({path: './.env'})
+
 let cooldown = new Set();
 let cdseconds = 5;
 
@@ -39,34 +40,34 @@ bot.on("ready", () => {
 
 });
 
-bot.once("ready", () => {
+bot.on("ready", () => {
   
   fetch(`${process.env.WARNS_URL}`)
     .then(res => res.json())
     .then(warns => fs.writeFile("./utils/warnings.json", JSON.stringify(warns), (err) => {
       if (err) console.log(err);
-      console.log("Варны загружены")
+      console.log("Варны загружены"), console.log(warns)
   }));
 
   fetch(`${process.env.COINS_URL}`)
     .then(res => res.json())
     .then(coins => fs.writeFile("./utils/coins.json", JSON.stringify(coins), (err) => {
       if (err) console.log(err);
-      console.log("Монеты ok")
+      console.log("Монеты ok"), console.log(coins)
   }));
   
   fetch(`${process.env.PREFIXES_URL}`)
     .then(res => res.json())
     .then(prefixes => fs.writeFile("./utils/prefixes.json", JSON.stringify(prefixes), (err) => {
       if (err) console.log(err);
-      console.log("Префиксы ok")
+      console.log("Префиксы ok"), console.log(prefixes)
   }));
   
   fetch(`${process.env.ROLES_URL}`)
     .then(res => res.json())
     .then(roles => fs.writeFile("./utils/autoroles.json", JSON.stringify(roles), (err) => {
       if (err) console.log(err);
-      console.log("Roles загружены")
+      console.log("Roles загружены"), console.log(roles)
   }));
 
 })
@@ -95,6 +96,7 @@ bot.on("message", message => {
   let coinAmt = Math.floor(Math.random() * 15) + 1;
   let baseAmt = Math.floor(Math.random() * 15) + 1;
 
+  
   console.log(`[log]${message.author.username}: ${message} ${coinAmt}/${baseAmt}`);
 
 
