@@ -85,7 +85,7 @@ console.log('Server started on port 8080');
 bot.on("ready", () => {
 
   console.log(`Дата: ${Date()}; ${bot.user.username} онлайн на ${bot.guilds.size} серверах!`);
-  bot.user.setActivity(`${Date()}`, {
+  bot.user.setActivity(`${"САСАТ"}`, {
     type: "WATCHING"
   });
 
@@ -97,28 +97,28 @@ bot.on("ready", () => {
     .then(res => res.json())
     .then(warns => fs.writeFile("./utils/warnings.json", JSON.stringify(warns), (err) => {
       if (err) console.log(err);
-      console.log("Варны загружены"), console.log(warns)
+      console.log("Варны загружены")
   }));
 
   fetch(`${process.env.COINS_URL}`)
     .then(res => res.json())
     .then(coins => fs.writeFile("./utils/coins.json", JSON.stringify(coins), (err) => {
       if (err) console.log(err);
-      console.log("Монеты ok"), console.log(coins)
+      console.log("Монеты ok")
   }));
   
   fetch(`${process.env.PREFIXES_URL}`)
     .then(res => res.json())
     .then(prefixes => fs.writeFile("./utils/prefixes.json", JSON.stringify(prefixes), (err) => {
       if (err) console.log(err);
-      console.log("Префиксы ok"), console.log(prefixes)
+      console.log("Префиксы ok")
   }));
   
   fetch(`${process.env.ROLES_URL}`)
     .then(res => res.json())
     .then(roles => fs.writeFile("./utils/autoroles.json", JSON.stringify(roles), (err) => {
       if (err) console.log(err);
-      console.log("Roles загружены"), console.log(roles)
+      console.log("Roles загружены")
   }));
 
 })
