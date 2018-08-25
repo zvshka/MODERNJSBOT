@@ -44,6 +44,7 @@ module.exports.run = async (bot, message, args) => {
     .setDescription("Warns")
     .setAuthor(message.author.username)
     .setColor("#fc6400")
+    .addField("Разварнен", `<@${wUser.id}>`)
     .addField("Варнов", warns[wUser.id].warns)
     .setFooter(`${message.author.username}`, message.author.avatarURL)
   let warnchannel = message.guild.channels.find(c => c.name === "logs");
