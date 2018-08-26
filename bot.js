@@ -12,7 +12,7 @@ const enves = require('dotenv').config({path: './.env'})
 
 let cooldown = new Set();
 let cdseconds = 5;
-
+var path = require('path');
 //Считывание папки с командами
 fs.readdir("./commands/", (err, files) => {
 
@@ -33,7 +33,6 @@ fs.readdir("./commands/", (err, files) => {
 
 var http = require('http');
 // Path module
-var path = require('path');
 
 function handleRequest(req, res) {
   // What did we request?
@@ -104,21 +103,21 @@ bot.on("ready", () => {
     .then(res => res.json())
     .then(coins => fs.writeFile("./utils/coins.json", JSON.stringify(coins), (err) => {
       if (err) console.log(err);
-      console.log("Монеты ok")
+      console.log("Монеты загружены")
   }));
   
   fetch(`${process.env.PREFIXES_URL}`)
     .then(res => res.json())
     .then(prefixes => fs.writeFile("./utils/prefixes.json", JSON.stringify(prefixes), (err) => {
       if (err) console.log(err);
-      console.log("Префиксы ok")
+      console.log("Префиксы загружены")
   }));
   
   fetch(`${process.env.ROLES_URL}`)
     .then(res => res.json())
     .then(roles => fs.writeFile("./utils/autoroles.json", JSON.stringify(roles), (err) => {
       if (err) console.log(err);
-      console.log("Roles загружены")
+      console.log("Роли загружены")
   }));
 
 })

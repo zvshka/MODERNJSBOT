@@ -26,7 +26,10 @@ module.exports.run = async (bot, message, args) => {
   if (!reason) return message.channel.send({
     embed: {
       color: 0x00a8ff,
-      description: "Причина не указана"
+      fields: [{
+        name: "Ошибка",
+        value: "Не указанн человек"
+      }]
     }
   })
 
