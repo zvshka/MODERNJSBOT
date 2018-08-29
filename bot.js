@@ -35,7 +35,6 @@ fs.readdir("./commands/", (err, files) => {
       group: props.help.group
     }
     
-    console.log(help)
     fs.writeFileSync("./utils/help.json", JSON.stringify(help), (err)=> {
       if(err)  {
         console.log(err)
