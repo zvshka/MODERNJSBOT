@@ -6,7 +6,7 @@ const commands = JSON.parse(fs.readFileSync("./utils/help.json", "utf8"));
 
 module.exports.run = async (bot, message, args) => {
     let prefixes = JSON.parse(fs.readFileSync("./utils/prefixes.json", "utf8"));
-    let prefix = prefixes[message.guild.id][prefixes]
+    let prefix = prefixes[message.guild.id].prefixes
     if (args.length == 0) {
         const embed = new Discord.RichEmbed()
             .setColor(0x1D82B6) // You can set this color to whatever you want.
@@ -100,7 +100,7 @@ module.exports.run = async (bot, message, args) => {
                     // Lets also count commandsFound + 1 every time it finds a command in the group
                     commandsFound++
                     // Lets add the command field to the embed
-                    embed.addField(`${commands[cmd].name}`, `**Description:** ${commands[cmd].desc}\n**Usage:** ${prefix + commands[cmd].usage}`); // This will output something like <commandname>[title] [newline] desc: <description> [newline] usage: <usage
+                    embed.addField(`${commands[cmd].name}`, `**Description:** ${commands[cmd].desc}\n**Usage:** ${prefix + commands[cmd].name + commands[cmd].usage}`); // This will output something like <commandname>[title] [newline] desc: <description> [newline] usage: <usage
                 }
 
             }

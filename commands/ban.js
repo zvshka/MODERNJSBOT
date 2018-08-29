@@ -34,6 +34,6 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
   name:"ban",
   usage: "<@member> <причина>",
-  desc: "",
+  desc: "Забанить человека",
   group: "mod"
 }
