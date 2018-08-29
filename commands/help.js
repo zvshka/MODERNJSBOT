@@ -22,7 +22,7 @@ module.exports.run = async (bot, message, args) => {
                 // Lets also count commandsFound + 1 every time it finds a command in the group
                 commandsFound++
                 // Lets add the command field to the embed
-                embed.addField(`${commands[cmd].name}`, `**Описание:** ${commands[cmd].desc}\n**Использование:** ${prefix + commadns[cmd].name + ' '+ commands[cmd].usage}`); // This will output something like <commandname>[title] [newline] desc: <description> [newline] usage: <usage
+                embed.addField(`${commands[cmd].name}`, `**Описание:** ${commands[cmd].desc}\n**Использование:** ${prefix + commands[cmd].name + ' '+ commands[cmd].usage}`); // This will output something like <commandname>[title] [newline] desc: <description> [newline] usage: <usage
             }
 
         }
