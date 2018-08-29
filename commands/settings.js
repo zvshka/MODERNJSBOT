@@ -30,5 +30,8 @@ module.exports.run = (bot, message, args) => {
 }
 
 module.exports.help = {
-  name: "settings"
+  name: "settings",
+  usage: " ",
+  desc: "настройки бота",
+  group: "fun"
 }

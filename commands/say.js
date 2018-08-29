@@ -10,5 +10,8 @@ module.exports.run =   (bot, message, args) => {
 }
 
 module.exports.help = {
-  name: "say"
+  name: "say",
+  usage: "<что-то>",
+  desc: "просто отправить что то от имени бота",
+  group: "fun"
 }

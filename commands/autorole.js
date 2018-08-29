@@ -80,5 +80,8 @@ module.exports.run = (bot, message, args) => {
 
 
 module.exports.help = {
-    name: "autorole"
+    name: "autorole",
+    usage: "<add/off> <роль>",
+    desc: "автороль",
+    group: "mod"
 }

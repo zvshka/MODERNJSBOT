@@ -15,5 +15,8 @@ module.exports.run =   (bot, message, args) => {
 }
 
 module.exports.help = {
-  name:"serverinfo"
+  name:"serverinfo",
+  usage: " ",
+  desc: "инфа о сервере",
+  group: "fun"
 }

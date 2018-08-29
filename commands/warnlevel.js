@@ -34,5 +34,8 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-  name: "warnlevel"
+  name: "warnlevel",
+  usage: "[member]",
+  desc: "уровень варна",
+  group: "mod"
 }

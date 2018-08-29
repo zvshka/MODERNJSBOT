@@ -24,9 +24,23 @@ fs.readdir("./commands/", (err, files) => {
   }
 
   jsfile.forEach((f, i) => {
+    var help = JSON.parse(fs.readFileSync("./utils/help.json", "utf8"))
     let props = require(`./commands/${f}`);
     console.log(`${f} загружено!`);
     bot.commands.set(props.help.name, props);
+    help[props.help.name] = {
+      name: props.help.name,
+      usage: props.help.usage,
+      desc: props.help.desc,
+      group: props.help.group
+    }
+    
+    console.log(help)
+    fs.writeFileSync("./utils/help.json", JSON.stringify(help), (err)=> {
+      if(err)  {
+        console.log(err)
+      }
+    })
   });
 
 });
@@ -119,8 +133,9 @@ bot.on("ready", () => {
       if (err) console.log(err);
       console.log("Роли загружены")
   }));
-
+  
 })
+
 
 
 //Исполнение команд

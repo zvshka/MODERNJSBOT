@@ -39,5 +39,8 @@ module.exports.run = (bot, message, args) => {
 }
 
 module.exports.help = {
-  name: "prefix"
+  name: "prefix",
+  usage: "<префикс>",
+  desc: "настроить префикс",
+  group: "mod"
 }

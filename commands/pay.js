@@ -54,5 +54,8 @@ module.exports.run = (bot, message, args) => {
 }
 
 module.exports.help = {
-  name: "pay"
+  name: "pay",
+  usage: "<@member> <кол-во>",
+  desc: "отправить монетки кому то",
+  group: "fun"
 }

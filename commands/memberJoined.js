@@ -35,5 +35,8 @@ module.exports = {
 };  
 
 module.exports.help = {
-  name: "onjoin"
+  name: "onjoin",
+  usage: " ",
+  desc: " ",
+  group: "mod"
 }

@@ -4,7 +4,7 @@ const ms = require("ms");
 const errors = require('../utils/errors')
 const fetch = require('node-fetch')
 
-module.exports.run = async (bot, message, args) => {
+module.exports.run = (bot, message, args) => {
   let warns = JSON.parse(fs.readFileSync("./utils/warnings.json", "utf8"));
   if (!message.member.hasPermission("ADMINISTRATOR")) return errors.noPerms(message, "ADMINISTRATOR").then(msg => {
     msg.delete(5000)
@@ -87,5 +87,8 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-  name: "warn"
+  name: "warn",
+  usage: "<@member> <причина>",
+  desc: "warning system",
+  group: "mod"
 }

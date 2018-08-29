@@ -3,5 +3,8 @@ module.exports.run = async (bot, message, args) => { // Get stats on a user on t
 }
 
 module.exports.help = {
-    name: "r6rank"
+    name: "r6rank",
+    usage: " ",
+    desc: " ",
+    group: "fun"
 }

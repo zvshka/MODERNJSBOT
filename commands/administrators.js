@@ -27,5 +27,8 @@ module.exports.run = async (bot, message, args) => {
     message.channel.send(adembed)
 }
 module.exports.help = {
-    name: "adms"
+    name: "adms",
+    usage: " ",
+    desc: "показывает администраторов",
+    group: "mod"
 }

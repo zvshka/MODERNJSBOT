@@ -17,5 +17,8 @@ module.exports.run = (bot, message, args) => {
 }
 
 module.exports.help = { 
-  name: "clear"
+  name: "clear",
+  usage: "<3-100>",
+  desc: "очистка сообщений",
+  group: "mod"
 }

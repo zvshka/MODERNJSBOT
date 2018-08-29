@@ -19,4 +19,7 @@ module.exports.run = async (bot, message, args, color) => {
 
 module.exports.help = {
     name: 'ping',
+    usage: " ",
+    desc: "пинг до бота",
+    group: "mod"
 }

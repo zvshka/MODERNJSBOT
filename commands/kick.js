@@ -30,5 +30,8 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-  name:"kick"
+  name:"kick",
+  usage: "<@member> <причина>",
+  desc: "кик",
+  group: "mod"
 }

@@ -38,5 +38,8 @@ module.exports.run = (bot, message, args) => {
 }
 
 module.exports.help = {
-  name: "when"
+  name: "when",
+  usage: "[member]",
+  desc: "когда вступил",
+  group: "fun"
 }

@@ -26,5 +26,8 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-  name: "removerole"
+  name: "removerole",
+  usage: "<@member> <роль>",
+  desc: "удалить роль",
+  group: "mod"
 }

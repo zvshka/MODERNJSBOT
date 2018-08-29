@@ -24,5 +24,8 @@ module.exports.run = (bot, message, args) => {
 }
 
 module.exports.help = {
-  name: "coins"
+  name: "coins",
+  usage: " ",
+  desc: "монетки",
+  group: "fun"
 }

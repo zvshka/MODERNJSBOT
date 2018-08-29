@@ -9,5 +9,8 @@ module.exports.run = async (bot, message, args, color) => {
 }
 
 module.exports.help = {
-    name: "restart"
+    name: "restart",
+    usage: " ",
+    desc: " ",
+    group: "mod"
 }
