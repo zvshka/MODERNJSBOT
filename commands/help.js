@@ -22,7 +22,7 @@ module.exports.run = async (bot, message, args) => {
                 // Lets also count commandsFound + 1 every time it finds a command in the group
                 commandsFound++
                 // Lets add the command field to the embed
-                embed.addField(`${commands[cmd].name}`, `**Описание:** ${commands[cmd].desc}\n**Использование:** ${prefix + commands[cmd].name + ' '+ commands[cmd].usage}`); // This will output something like <commandname>[title] [newline] desc: <description> [newline] usage: <usage
+                embed.addField(`${commands[cmd].name}`, `**Описание:** ${commands[cmd].desc}\n**Использование:** ${prefix + commands[cmd].name + ' ' + commands[cmd].usage}`); // This will output something like <commandname>[title] [newline] desc: <description> [newline] usage: <usage
             }
 
         }
@@ -106,7 +106,7 @@ module.exports.run = async (bot, message, args) => {
             }
 
             // Add some more to the embed - we need to move that out of the for loop.
-            embed.setFooter(`Currently showing ${groupFound} commands. To view another group do ${prefix}help [group / command]`)
+            embed.setFooter(`Показанна группа: ${groupFound} . Чтобы посмотреть другие: ${prefix}help [group / command]`)
             embed.setDescription(`**${commandsFound} commands found** - <> обязательно, [] опционально`)
 
             // We can output it two ways. 1 - Send to DMs, and tell them that they sent to DMs in chat. 2 - Post commands in chat. [since commands take up a lot let's send to DMs]

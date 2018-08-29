@@ -33,10 +33,3 @@ module.exports = {
     GuildMember.send({ embed: embed });
   }
 };  
-
-module.exports.help = {
-  name: "onjoin",
-  usage: " ",
-  desc: " ",
-  group: "mod"
-}
