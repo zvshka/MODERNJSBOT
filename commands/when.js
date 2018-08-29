@@ -28,9 +28,9 @@ module.exports.run = (bot, message, args) => {
   embed.addField('Дата:', target.joinedAt, true);
 
   message.channel.send(
-    'Здесь\' ' +
+    'Участник\' ' +
     target +
-    '\' вступил, Благодаря ' +
+    '\' запросил: ' +
     message.author, {
       embed: embed
     }
