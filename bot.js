@@ -136,6 +136,9 @@ bot.on("ready", () => {
   let guild = bot.guilds.array()
   for(let i in guild) {
     var prefixes = JSON.parse(fs.readFileSync("./utils/prefixes.json", "utf8"));
+    if(!prefixes[guild[i]]) prefixes[guild[i]] ={
+      prefixes: botconfig.prefix
+    }
     var prefix = prefixes[guild[i].id].prefixes
     guild[i].members.get(bot.user.id).setNickname(`[${prefix}] ${bot.user.username}`);
   }
