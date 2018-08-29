@@ -133,6 +133,13 @@ bot.on("ready", () => {
       console.log("Роли загружены")
   }));
   
+  let guild = bot.guilds.array()
+  for(let i in guild) {
+    var prefixes = JSON.parse(fs.readFileSync("./utils/prefixes.json", "utf8"));
+    var prefix = prefixes[guild[i].id].prefixes
+    guild[i].members.get(bot.user.id).setNickname(`[${prefix}] ${bot.user.username}`);
+  }
+
 })
 
 

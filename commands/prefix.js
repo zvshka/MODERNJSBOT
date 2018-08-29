@@ -35,7 +35,8 @@ module.exports.run = (bot, message, args) => {
   .setDescription(`Префик установлен: ${args[0]}`);
 
   message.channel.send(sEmbed);
-
+  let prefix = prefixes[message.guild.id].prefixes
+  message.guild.members.get(bot.user.id).setNickname(`[${prefix}] ${bot.user.username}`);
 }
 
 module.exports.help = {
