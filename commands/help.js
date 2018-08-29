@@ -22,14 +22,14 @@ module.exports.run = async (bot, message, args) => {
                 // Lets also count commandsFound + 1 every time it finds a command in the group
                 commandsFound++
                 // Lets add the command field to the embed
-                embed.addField(`${commands[cmd].name}`, `**Описание:** ${commands[cmd].desc}\n**Usage:** ${prefix + commadns[cmd].name commands[cmd].usage}`); // This will output something like <commandname>[title] [newline] desc: <description> [newline] usage: <usage
+                embed.addField(`${commands[cmd].name}`, `**Описание:** ${commands[cmd].desc}\n**Использование:** ${prefix + commadns[cmd].name commands[cmd].usage}`); // This will output something like <commandname>[title] [newline] desc: <description> [newline] usage: <usage
             }
 
         }
 
         // Add some more to the embed - we need to move that out of the for loop.
-        embed.setFooter(`Currently showing fun commands. To view another group do ${prefix}help [group / command]`)
-        embed.setDescription(`**${commandsFound} commands found** - <> means required, [] means optional`)
+        embed.setFooter(`Сейчас показаны фан команды. Для просмотра других: ${prefix}help [group / command]`)
+        embed.setDescription(`**${commandsFound} команд найдено** - <> обязательно, [] опционально`)
 
         // We can output it two ways. 1 - Send to DMs, and tell them that they sent to DMs in chat. 2 - Post commands in chat. [since commands take up a lot let's send to DMs]
         message.author.send({
@@ -39,7 +39,7 @@ module.exports.run = async (bot, message, args) => {
         message.channel.send({
             embed: {
                 color: 0x1D82B6,
-                description: `**Check your DMs ${message.author}!**`
+                description: `**Выслал в личку ${message.author}!**`
             }
         })
 
@@ -100,14 +100,14 @@ module.exports.run = async (bot, message, args) => {
                     // Lets also count commandsFound + 1 every time it finds a command in the group
                     commandsFound++
                     // Lets add the command field to the embed
-                    embed.addField(`${commands[cmd].name}`, `**Description:** ${commands[cmd].desc}\n**Usage:** ${prefix + commands[cmd].name + commands[cmd].usage}`); // This will output something like <commandname>[title] [newline] desc: <description> [newline] usage: <usage
+                    embed.addField(`${commands[cmd].name}`, `**Описание:** ${commands[cmd].desc}\n**Использование:** ${prefix + commands[cmd].name commands[cmd].usage}`); // This will output something like <commandname>[title] [newline] desc: <description> [newline] usage: <usage
                 }
 
             }
 
             // Add some more to the embed - we need to move that out of the for loop.
             embed.setFooter(`Currently showing ${groupFound} commands. To view another group do ${prefix}help [group / command]`)
-            embed.setDescription(`**${commandsFound} commands found** - <> means required, [] means optional`)
+            embed.setDescription(`**${commandsFound} commands found** - <> обязательно, [] опционально`)
 
             // We can output it two ways. 1 - Send to DMs, and tell them that they sent to DMs in chat. 2 - Post commands in chat. [since commands take up a lot let's send to DMs]
             message.author.send({
@@ -117,7 +117,7 @@ module.exports.run = async (bot, message, args) => {
             message.channel.send({
                 embed: {
                     color: 0x1D82B6,
-                    description: `**Check your DMs ${message.author}!**`
+                    description: `**Выслал в личку ${message.author}!**`
                 }
             })
 
@@ -151,7 +151,7 @@ module.exports.run = async (bot, message, args) => {
         if (commandFound === '') {
             message.channel.send({
                 embed: {
-                    description: `**No group or command found titled \`${args.join(" ")}\`**`,
+                    description: `**Нет таких групп \`${args.join(" ")}\`**`,
                     color: 0x1D82B6,
                 }
             }).catch()
@@ -161,11 +161,11 @@ module.exports.run = async (bot, message, args) => {
         // Since this one is smaller, lets send the embed differently.
         message.channel.send({
             embed: {
-                title: '<> means required, [] means optional',
+                title: '<> обязательно, [] опционально',
                 color: 0x1D82B6,
                 fields: [{
                     name: commandFound,
-                    value: `**Description:** ${commandDesc}\n**Usage:** ${commandUsage}\n**Group:** ${commandGroup}`
+                    value: `**Описание:** ${commandDesc}\n**Использование:** ${commandUsage}\n**Группа:** ${commandGroup}`
                 }]
             }
         })
