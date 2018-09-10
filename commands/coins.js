@@ -5,13 +5,17 @@ module.exports.run = (bot, message, args) => {
   //!coins
   let coins = JSON.parse(fs.readFileSync("./utils/coins.json", "utf8"))
   
-  if(!coins[message.author.id]){
-    coins[message.author.id] = {
+  if(!coins[message.guild.id]) {
+    coins[message.guild.id] = {};
+  }
+
+  if(!coins[message.guild.id][message.author.id]){
+    coins[message.guild.id][message.author.id] = {
       coins: 0
     };
   }
 
-  let uCoins = coins[message.author.id].coins;
+  let uCoins = coins[message.guild.id][message.author.id].coins;
 
 
   let coinEmbed = new Discord.RichEmbed()

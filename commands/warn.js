@@ -33,11 +33,13 @@ module.exports.run = (bot, message, args) => {
     }
   })
 
-  if (!warns[wUser.id]) warns[wUser.id] = {
-    warns: 0
-  };
+  if(!warns[message.guild.id]) warns[message.guild.id] = {}
 
-  warns[wUser.id].warns++;
+  if(!warns[message.guild.id][wUser.id]) warns[message.guild.id][wUser.id] = {
+    warns: 0
+  }
+
+  warns[message.guild.id][wUser.id].warns++
 
   fs.writeFile("./utils/warnings.json", JSON.stringify(warns), (err) => {
     if (err) console.log(err)
@@ -67,7 +69,7 @@ module.exports.run = (bot, message, args) => {
   message.delete()
   warnchannel.send(warnEmbed);
 
-  if (warns[wUser.id].warns == 4) {
+  if (warns[message.guild.id][wUser.id].warns == 4) {
     let muterole = message.guild.roles.find(r => r.name === "BGuy");
     if (!muterole) return message.reply("Нет роли.");
 
@@ -80,7 +82,7 @@ module.exports.run = (bot, message, args) => {
       message.reply(`<@${wUser.id}> Размучен.`)
     }, ms(mutetime))
   }
-  if (warns[wUser.id].warns == 10) {
+  if (warns[message.guild.id][wUser.id].warns == 10) {
     message.guild.member(wUser).ban(reason);
     message.reply(`<@${wUser.id}> Забанен.`)
   }

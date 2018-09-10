@@ -19,14 +19,16 @@ module.exports.run = async (bot, message, args) => {
     }
   });
 
-  if (!warns[wUser.id]) warns[wUser.id] = {
+  if(!warns[message.guild.id]) warns[message.guild.id] = {}
+
+  if(!warns[message.guild.id][wUser.id]) warns[message.guild.id][wUser.id] = {
     warns: 0
-  };
+  }
   
-  if(warns[wUser.id].warns >= 1) {
-    warns[wUser.id].warns--;
+  if(warns[message.guild.id][wUser.id] >= 1) {
+    warns[message.guild.id][wUser.id].warns--;
   } else {
-      return message.channel.send("Нет варнов")
+    return message.channel.send("Нет варнов")
   }
 
   fs.writeFile("./utils/warnings.json", JSON.stringify(warns), (err) => {
@@ -45,7 +47,7 @@ module.exports.run = async (bot, message, args) => {
     .setAuthor(message.author.username)
     .setColor("#fc6400")
     .addField("Разварнен", `<@${wUser.id}>`)
-    .addField("Варнов", warns[wUser.id].warns)
+    .addField("Варнов", warns[message.guild.id][wUser.id].warns)
     .setFooter(`${message.author.username}`, message.author.avatarURL)
   let warnchannel = message.guild.channels.find(c => c.name === "logs");
   if (!warnchannel) return message.reply("Канал не найден").then(msg => {

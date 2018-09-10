@@ -118,14 +118,14 @@ bot.on("ready", () => {
       if (err) console.log(err);
       console.log("Монеты загружены")
   }));
-  
-  fetch(`${process.env.PREFIXES_URL}`)
-    .then(res => res.json())
-    .then(prefixes => fs.writeFile("./utils/prefixes.json", JSON.stringify(prefixes), (err) => {
-      if (err) console.log(err);
-      console.log("Префиксы загружены")
-  }));
-  
+  if (process.env.KEYFORBOT != 1) {
+    fetch(`${process.env.PREFIXES_URL}`)
+      .then(res => res.json())
+      .then(prefixes => fs.writeFile("./utils/prefixes.json", JSON.stringify(prefixes), (err) => {
+        if (err) console.log(err);
+        console.log("Префиксы загружены")
+      }));
+  }
   fetch(`${process.env.ROLES_URL}`)
     .then(res => res.json())
     .then(roles => fs.writeFile("./utils/autoroles.json", JSON.stringify(roles), (err) => {
@@ -161,8 +161,12 @@ bot.on("message", message => {
   }
   //Монетки :D
   let coins = JSON.parse(fs.readFileSync("./utils/coins.json", "utf8"))
-  if (!coins[message.author.id]) {
-    coins[message.author.id] = {
+  if(!coins[message.guild.id]) {
+    coins[message.guild.id] = {};
+  }
+
+  if(!coins[message.guild.id][message.author.id]){
+    coins[message.guild.id][message.author.id] = {
       coins: 0
     };
   }
@@ -175,8 +179,8 @@ bot.on("message", message => {
 
 
   if (coinAmt === baseAmt) {
-    coins[message.author.id] = {
-      coins: coins[message.author.id].coins + coinAmt
+    coins[message.guild.id][message.author.id] = {
+      coins: coins[message.guild.id][message.author.id].coins + coinAmt
     };
     fs.writeFile("./utils/coins.json", JSON.stringify(coins), (err) => {
       if (err) console.log(err)
