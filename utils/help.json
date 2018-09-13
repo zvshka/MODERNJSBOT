@@ -2,7 +2,7 @@
     "addrole": {
         "name": "addrole",
         "usage": "<@member> <роль>",
-        "desc": "",
+        "desc": "Добавить роль",
         "group": "mod"
     },
     "adms": {
@@ -20,7 +20,7 @@
     "ban": {
         "name": "ban",
         "usage": "<@member> <причина>",
-        "desc": "",
+        "desc": "Забанить человека",
         "group": "mod"
     },
     "botinfo": {
@@ -97,7 +97,7 @@
     },
     "rainbow": {
         "name": "rainbow",
-        "usage": " ",
+        "usage": " <hex-код цвета>",
         "desc": " ",
         "group": "fun"
     },
@@ -164,7 +164,7 @@
     "warnlevel": {
         "name": "warnlevel",
         "usage": "[member]",
-        "desc": "уровень варна",
+        "desc": "уровень варна test",
         "group": "mod"
     },
     "when": {
@@ -178,5 +178,17 @@
         "usage": " ",
         "desc": " ",
         "group": "no"
+    },
+    "warn_test": {
+        "name": "warn_test",
+        "usage": "<@member> <причина>",
+        "desc": "warning system",
+        "group": "mod"
+    },
+    "rainbow_test": {
+        "name": "rainbow_test",
+        "usage": " <hex-код цвета>",
+        "desc": " ",
+        "group": "fun"
     }
 }
