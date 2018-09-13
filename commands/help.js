@@ -165,7 +165,7 @@ module.exports.run = async (bot, message, args) => {
                 color: 0x1D82B6,
                 fields: [{
                     name: commandFound,
-                    value: `**Описание:** ${commandDesc}\n**Использование:** ${commandUsage}\n**Группа:** ${commandGroup}`
+                    value: `**Описание:** ${commandDesc}\n**Использование:** ${prefix + commandFound + ' ' + commandUsage}\n**Группа:** ${commandGroup}`
                 }]
             }
         })
