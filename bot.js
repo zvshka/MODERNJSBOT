@@ -4,7 +4,8 @@ const Discord = require("discord.js");
 const fs = require("fs");
 const bot = new Discord.Client();
 bot.commands = new Discord.Collection();
-const event = require('./utils/memberJoined')
+const join = require('./utils/memberJoined')
+const leave = require('./utils/memberLeaved')
 const fetch = require('node-fetch')
 const bannedwords = require('./utils/bannedwords.json')
 //let coins = JSON.parse(fs.readFileSync("./utils/coins.json", "utf8"));
@@ -12,7 +13,6 @@ const enves = require('dotenv').config({path: './.env'})
 
 let cooldown = new Set();
 let cdseconds = 5;
-var path = require('path');
 //Считывание папки с командами
 fs.readdir("./commands/", (err, files) => {
 
@@ -44,61 +44,11 @@ fs.readdir("./commands/", (err, files) => {
 
 });
 
-var http = require('http');
-// Path module
-
-function handleRequest(req, res) {
-  // What did we request?
-  var pathname = req.url;
-
-  // If blank let's ask for index.html
-  if (pathname == '/') {
-    pathname = '/site/index.html';
-  }
-
-  // Ok what's our file extension
-  var ext = path.extname(pathname);
-
-  // Map extension to file type
-  var typeExt = {
-    '.html': 'text/html',
-    '.js': 'text/javascript',
-    '.css': 'text/css'
-  };
-  // What is it?  Default to plain text
-
-  var contentType = typeExt[ext] || 'text/plain';
-
-  // User file system module
-  fs.readFile(__dirname + pathname,
-    // Callback function for reading
-    function (err, data) {
-      // if there is an error
-      if (err) {
-        res.writeHead(500);
-        return res.end('Error loading ' + pathname);
-      }
-      // Otherwise, send the data, the contents of the file
-      res.writeHead(200, {
-        'Content-Type': contentType
-      });
-      res.end(data);
-    }
-  );
-}
-
-// Using the filesystem module
-
-var server = http.createServer(handleRequest);
-server.listen(8080);
-
-console.log('Server started on port 8080');
-
 bot.on("ready", () => {
 
   console.log(`Дата: ${Date()}; ${bot.user.username} онлайн на ${bot.guilds.size} серверах!`);
-  bot.user.setActivity(`${"САСАТ"}`, {
-    type: "WATCHING"
+  bot.user.setActivity(`${"https://www.twitch.tv/zvshka"}`, {
+    type: "STREAMING"
   });
 
 });
@@ -145,8 +95,6 @@ bot.on("ready", () => {
 
 })
 
-
-
 //Исполнение команд
 bot.on("message", message => {
   //Проверка на то что создатель сообщения бот и канал DM
@@ -173,10 +121,8 @@ bot.on("message", message => {
 
   let coinAmt = Math.floor(Math.random() * 15) + 1;
   let baseAmt = Math.floor(Math.random() * 15) + 1;
-
   
-  console.log(`[log]${message.author.username}: ${message} ${coinAmt}/${baseAmt}`);
-
+  console.log(`[log]${message.guild.name}: ${message.author.username}: ${message} ${coinAmt}/${baseAmt}`);
 
   if (coinAmt === baseAmt) {
     coins[message.guild.id][message.author.id] = {
@@ -192,7 +138,6 @@ bot.on("message", message => {
       headers: { 'Content-Type': 'application/json' },
     })
     .then(res => res.json())
-    .then(json => console.log(json))
     
     let coinEmbed = new Discord.RichEmbed()
       .setAuthor(message.author.username)
@@ -238,6 +183,7 @@ bot.on("message", message => {
 });
 //Выдача роли когда кто-то вступает и приветствие
 bot.on('guildMemberAdd', (member) => {
+  
   let autorole = JSON.parse(fs.readFileSync('./utils/autoroles.json', 'utf8'))
   if (!autorole[member.guild.id]) autorole[member.guild.id] = {
     role: "off"
@@ -256,12 +202,20 @@ bot.on('guildMemberAdd', (member) => {
   member.addRole(role)
 
   try {
-    event.process(bot, member);
+    join.process(bot, member);
   } catch (e) {
     console.error(e.stack);
   }  
 
 });
+
+bot.on('guildMemberRemove', (member) => {
+  try {
+    leave.process(bot, member)
+  } catch (e) {
+    console.error(e.stack);
+  }
+})
 
 //Логин
 bot.login(process.env.TOKEN)

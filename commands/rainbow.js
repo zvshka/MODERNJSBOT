@@ -4,7 +4,7 @@ const fs = require('fs')
 module.exports.run = async (bot, message, args) => {
   let rMember = message.guild.member(message.author)
   let color = `0x` + args[0];
-  if (color.length < 8) {
+  if (color.length !== 8) {
     message.delete()
     message.reply("Цвет не подходит")
   }
