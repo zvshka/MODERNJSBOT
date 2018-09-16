@@ -47,8 +47,8 @@ fs.readdir("./commands/", (err, files) => {
 bot.on("ready", () => {
 
   console.log(`Дата: ${Date()}; ${bot.user.username} онлайн на ${bot.guilds.size} серверах!`);
-  bot.user.setActivity(`${"https://www.twitch.tv/zvshka"}`, {
-    type: "STREAMING"
+  bot.user.setActivity(`${"twitch.tv/zvshka"}`, {
+    type: "PLAYING"
   });
 
 });
@@ -122,7 +122,7 @@ bot.on("message", message => {
   let coinAmt = Math.floor(Math.random() * 15) + 1;
   let baseAmt = Math.floor(Math.random() * 15) + 1;
   
-  console.log(`[log]${message.guild.name}: ${message.author.username}: ${message} ${coinAmt}/${baseAmt}`);
+  message.guild.fetchMember(message.author).then(m => console.log(`[log]${message.guild.name}: ${m.displayName}: ${message} ${coinAmt}/${baseAmt}`))
 
   if (coinAmt === baseAmt) {
     coins[message.guild.id][message.author.id] = {
@@ -209,7 +209,7 @@ bot.on('guildMemberAdd', (member) => {
 
 });
 
-bot.on('guildMemberRemove', (member) => {
+bot.on('auditLog', (member) => {
   try {
     leave.process(bot, member)
   } catch (e) {
