@@ -6,6 +6,8 @@ const bot = new Discord.Client();
 bot.commands = new Discord.Collection();
 const join = require('./utils/memberJoined')
 const leave = require('./utils/memberLeaved')
+const kick = require('./utils/memberKicked')
+const ban = require('./utils/memberBanned')
 const fetch = require('node-fetch')
 const bannedwords = require('./utils/bannedwords.json')
 //let coins = JSON.parse(fs.readFileSync("./utils/coins.json", "utf8"));
@@ -209,13 +211,25 @@ bot.on('guildMemberAdd', (member) => {
 
 });
 
-bot.on('auditLog', (member) => {
+bot.on('guildMemberRemove', (member) => {
+  try {
+    kick.process(bot, member)
+  } catch (e) {
+    console.error(e.stack);
+  }
+  
+  try {
+    ban.process(bot, member)
+  } catch (e) {
+    console.error(e.stack);
+  }
+  
   try {
     leave.process(bot, member)
   } catch (e) {
     console.error(e.stack);
   }
-})
 
+})
 //Логин
 bot.login(process.env.TOKEN)
