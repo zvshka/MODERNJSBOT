@@ -1,17 +1,14 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 
-
-
-
 module.exports.run = (bot, message, args) => {
   var botconfig = require('../utils/botconfig.json')
   let prefixes = JSON.parse(fs.readFileSync("./utils/prefixes.json", "utf8"));
   let autorole = JSON.parse(fs.readFileSync('./utils/autoroles.json', 'utf8'))
-  if(!autorole[message.guild.id]) autorole[message.guild.id] = {
+  if (!autorole[message.guild.id]) autorole[message.guild.id] = {
     role: "off"
   }
-  
+
   if (!prefixes[message.guild.id]) {
     prefixes[message.guild.id] = {
       prefixes: botconfig.prefix
