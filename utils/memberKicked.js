@@ -24,7 +24,7 @@ module.exports = {
                         logs.send(kickEmbed)
                     }
                 } 
-                console.log(entry.target)
+                
             })
 
     }
