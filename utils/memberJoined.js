@@ -16,18 +16,11 @@ module.exports = {
     // DM the user more onboarding information
     const embed = new Discord.RichEmbed();
 
-    const description = 'Молодец что вступил к нам!\n\n' + 
-      'Если что то надо зови "создателей и тп".\n\n' + 
-      'Правила\n\n'+
-      '1. Общаться только в строго определённых каналах\n\n'+
-      '2. Быть онлайн хотябы раз в 14 дней если нет возможности то сообщить администарции\n\n'+
-      '3. Не оскорблять товарищей по игре\n\n'+
-      '4. Если вы гость то вы можете оставить заявку в клан в опр канале\n\n'+
-      `Остальное в канале rules`
-    
+    const description = `Читай правила и тп в канале https://discord.gg/R5xcAvy`
+
     embed.setTitle('Добро пожаловть в CIL!');
     embed.setDescription(description);
-    embed.setFooter('CIL', GuildMember.guild.iconURL);
+    embed.setFooter('C.I.L', GuildMember.guild.iconURL);
     
     if(User.bot) return
     GuildMember.send({ embed: embed });

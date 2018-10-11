@@ -15,11 +15,10 @@ module.exports = {
                     console.log(date_m)
                     if (date_m < 3000) {
                         let banEmbed = new Discord.RichEmbed()
-                            .setDescription("~Ban~")
+                            .setDescription(`**Ban**: ${entry.target.username}#${entry.target.discriminator}`)
                             .setColor("#bc0000")
-                            .addField("Забанен", `<@${entry.target.id}> с ID ${entry.target.id}`)
-                            .addField("Забанил", `<@${entry.executor.id}> с ID ${entry.executor.id}`)
-                            .addField("Забанен в", "NaN")
+                            .addField("Забанен", `<@!${entry.target.id}> с ID ${entry.target.id}`)
+                            .addField("Забанил", `<@!${entry.executor.id}> с ID ${entry.executor.id}`)
                             .addField("Время", entry.createdAt)
                             .addField("Причина", entry.reason);
                         logs.send(banEmbed)

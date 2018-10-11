@@ -15,16 +15,16 @@ module.exports = {
                     console.log(date_m)
                     if (date_m < 3000) {
                         let kickEmbed = new Discord.RichEmbed()
-                            .setDescription("~Kick~")
+                            .setDescription(`**Kick**: ${entry.target.username}#${entry.target.discriminator}`)
                             .setColor("#e56b00")
-                            .addField("Кикнут", `<@${entry.target.id}> с ID ${entry.target.id}`)
-                            .addField("Кикнул", `<@${entry.executor.id}> с ID ${entry.executor.id}`)
-                            .addField("Кикнут в", "NaN")
+                            .addField("Кикнут", `<@!${entry.target.id}> с ID ${entry.target.id}`)
+                            .addField("Кикнул", `<@!${entry.executor.id}> с ID ${entry.executor.id}`)
                             .addField("Время", `${entry.createdAt}`)
                             .addField("Причина", `${entry.reason}`)
                         logs.send(kickEmbed)
                     }
-                }
+                } 
+                console.log(entry.target)
             })
 
     }
