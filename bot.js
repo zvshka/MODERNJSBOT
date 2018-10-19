@@ -9,7 +9,6 @@ const leave = require('./utils/memberLeaved')
 const kick = require('./utils/memberKicked')
 const ban = require('./utils/memberBanned')
 const fetch = require('node-fetch')
-const bannedwords = require('./utils/bannedwords.json')
 //let coins = JSON.parse(fs.readFileSync("./utils/coins.json", "utf8"));
 const enves = require('dotenv').config({path: './.env'})
 
@@ -49,8 +48,8 @@ fs.readdir("./commands/", (err, files) => {
 bot.on("ready", () => {
 
   console.log(`Дата: ${Date()}; ${bot.user.username} онлайн на ${bot.guilds.size} серверах!`);
-  bot.user.setActivity(`${"twitch.tv/zvshka"}`, {
-    type: "PLAYING"
+  bot.user.setActivity("twitch.tv/zvshka", {
+    type: "STREAMING"
   });
 
 });
@@ -173,14 +172,6 @@ bot.on("message", message => {
   setTimeout(() => {
     cooldown.delete(message.author.id)
   }, cdseconds * 1000)
-
-  if (message.author.bot) return
-  for (i in bannedwords.words) {
-    if (message.content.toLowerCase().includes(bannedwords.words[i])) {
-      message.delete();
-      message.channel.send(`Мат запрещён`);
-    }
-  }
 
 });
 //Выдача роли когда кто-то вступает и приветствие
