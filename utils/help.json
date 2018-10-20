@@ -41,12 +41,6 @@
         "desc": "монетки",
         "group": "fun"
     },
-    "": {
-        "name": "",
-        "usage": "",
-        "desc": "",
-        "group": ""
-    },
     "help": {
         "name": "help",
         "usage": "[группа]/[команда]",
@@ -58,18 +52,6 @@
         "usage": "<@member> <причина>",
         "desc": "кик",
         "group": "mod"
-    },
-    "onjoin": {
-        "name": "onjoin",
-        "usage": " ",
-        "desc": " ",
-        "group": "mod"
-    },
-    "multicolor": {
-        "name": "multicolor",
-        "usage": " ",
-        "desc": " ",
-        "group": "fun"
     },
     "pay": {
         "name": "pay",
@@ -89,16 +71,10 @@
         "desc": "настроить префикс",
         "group": "mod"
     },
-    "r6rank": {
-        "name": "r6rank",
-        "usage": " ",
-        "desc": " ",
-        "group": "fun"
-    },
     "rainbow": {
         "name": "rainbow",
         "usage": " <hex-код цвета>",
-        "desc": " ",
+        "desc": "Выдача себе любого цвета",
         "group": "fun"
     },
     "removerole": {
@@ -178,17 +154,5 @@
         "usage": " ",
         "desc": " ",
         "group": "no"
-    },
-    "warn_test": {
-        "name": "warn_test",
-        "usage": "<@member> <причина>",
-        "desc": "warning system",
-        "group": "mod"
-    },
-    "rainbow_test": {
-        "name": "rainbow_test",
-        "usage": " <hex-код цвета>",
-        "desc": " ",
-        "group": "fun"
     }
 }
