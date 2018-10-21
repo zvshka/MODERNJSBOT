@@ -9,9 +9,7 @@ const leave = require('./utils/memberLeaved')
 const kick = require('./utils/memberKicked')
 const ban = require('./utils/memberBanned')
 const fetch = require('node-fetch')
-//let coins = JSON.parse(fs.readFileSync("./utils/coins.json", "utf8"));
 const enves = require('dotenv').config({path: './.env'})
-
 let cooldown = new Set();
 let cdseconds = 5;
 //Считывание папки с командами
@@ -51,7 +49,6 @@ bot.on("ready", () => {
   bot.user.setActivity("twitch.tv/zvshka", {
     type: "STREAMING"
   });
-
 });
 
 bot.on("ready", () => {
@@ -87,7 +84,7 @@ bot.on("ready", () => {
   let guild = bot.guilds.array()
   for(let i in guild) {
     var prefixes = JSON.parse(fs.readFileSync("./utils/prefixes.json", "utf8"));
-    if(!prefixes[guild[i].id]) prefixes[guild[i].id] ={
+    if(!prefixes[guild[i].id]) prefixes[guild[i].id] = {
       prefixes: botconfig.prefix
     }
     var prefix = prefixes[guild[i].id].prefixes
