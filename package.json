@@ -3,7 +3,7 @@
   "description": "lel",
   "main": "bot.js",
   "engines": {
-    "node": "^8.0.0",
+    "node": "8.0.0",
     "npm": "^6.1.0"
   },
   "scripts": {
