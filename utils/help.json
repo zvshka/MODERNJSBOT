@@ -1,3 +1,164 @@
 {
-
+    "addrole": {
+        "name": "addrole",
+        "usage": "<@member> <роль>",
+        "desc": "Добавить роль",
+        "group": "mod"
+    },
+    "adms": {
+        "name": "adms",
+        "usage": " ",
+        "desc": "показывает администраторов",
+        "group": "mod"
+    },
+    "autorole": {
+        "name": "autorole",
+        "usage": "<add/off> <роль>",
+        "desc": "автороль",
+        "group": "mod"
+    },
+    "ban": {
+        "name": "ban",
+        "usage": "<@member> <причина>",
+        "desc": "Забанить человека",
+        "group": "mod"
+    },
+    "botinfo": {
+        "name": "botinfo",
+        "usage": " ",
+        "desc": "информация о боте",
+        "group": "other"
+    },
+    "clear": {
+        "name": "clear",
+        "usage": "<3-100>",
+        "desc": "очистка сообщений",
+        "group": "mod"
+    },
+    "coins": {
+        "name": "coins",
+        "usage": " ",
+        "desc": "монетки",
+        "group": "fun"
+    },
+    "example": {
+        "name": "example",
+        "usage": " ",
+        "desc": " ",
+        "group": "no"
+    },
+    "help": {
+        "name": "help",
+        "usage": "[группа]/[команда]",
+        "desc": "команда показывающая команды",
+        "group": "mod"
+    },
+    "kick": {
+        "name": "kick",
+        "usage": "<@member> <причина>",
+        "desc": "кик",
+        "group": "mod"
+    },
+    "pay": {
+        "name": "pay",
+        "usage": "<@member> <кол-во>",
+        "desc": "отправить монетки кому то",
+        "group": "fun"
+    },
+    "ping": {
+        "name": "ping",
+        "usage": " ",
+        "desc": "пинг до бота",
+        "group": "mod"
+    },
+    "prefix": {
+        "name": "prefix",
+        "usage": "<префикс>",
+        "desc": "настроить префикс",
+        "group": "mod"
+    },
+    "rainbow": {
+        "name": "rainbow",
+        "usage": " <hex-код цвета>",
+        "desc": "Выдача себе любого цвета",
+        "group": "fun"
+    },
+    "removerole": {
+        "name": "removerole",
+        "usage": "<@member> <роль>",
+        "desc": "удалить роль",
+        "group": "mod"
+    },
+    "report": {
+        "name": "report",
+        "usage": "<@member> <причина>",
+        "desc": "отправить жалобу на мембера",
+        "group": "mod"
+    },
+    "restart": {
+        "name": "restart",
+        "usage": " ",
+        "desc": " ",
+        "group": "mod"
+    },
+    "say": {
+        "name": "say",
+        "usage": "<что-то>",
+        "desc": "просто отправить что то от имени бота",
+        "group": "fun"
+    },
+    "serverinfo": {
+        "name": "serverinfo",
+        "usage": " ",
+        "desc": "инфа о сервере",
+        "group": "fun"
+    },
+    "settings": {
+        "name": "settings",
+        "usage": " ",
+        "desc": "настройки бота",
+        "group": "fun"
+    },
+    "unwarn": {
+        "name": "unwarn",
+        "usage": "<@member>",
+        "desc": "анварн человека",
+        "group": "mod"
+    },
+    "up": {
+        "name": "up",
+        "usage": " ",
+        "desc": "повышение до Собеседуемого/Вступившиго",
+        "group": "mod"
+    },
+    "warn": {
+        "name": "warn",
+        "usage": "<@member> <причина>",
+        "desc": "warning system",
+        "group": "mod"
+    },
+    "warnlevel": {
+        "name": "warnlevel",
+        "usage": "[member]",
+        "desc": "уровень варна",
+        "group": "mod"
+    },
+    "when": {
+        "name": "when",
+        "usage": "[member]",
+        "desc": "когда вступил",
+        "group": "fun"
+    },
+    "rules": {
+        "name": "rules",
+        "usage": " ",
+        "desc": "правила",
+        "group": "other"
+    },
+    "qs": {
+        "name": "qs",
+        "usage": " ",
+        "desc": "Частые вопросы",
+        "group": "other"
+    }
 }
