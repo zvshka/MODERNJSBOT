@@ -8,7 +8,7 @@ module.exports.run = async (bot, message, args) => {
   let reason = args.join(" ").slice(22);
 
   let reportEmbed = new Discord.RichEmbed()
-    .setDescription("Репорт")
+    .setDescription("**Репорт**")
     .setColor("#f99b70")
     .addField("Зарепочен", `${rUser} with ID: ${rUser.id}`)
     .addField("Репорт от", `${message.author} with ID: ${message.author.id}`)

@@ -173,7 +173,12 @@ bot.on("message", message => {
 });
 //Выдача роли когда кто-то вступает и приветствие
 bot.on('guildMemberAdd', (member) => {
-  
+    try {
+      join.process(bot, member);
+    } catch (e) {
+      console.error(e.stack);
+    }
+
   let autorole = JSON.parse(fs.readFileSync('./utils/autoroles.json', 'utf8'))
   if (!autorole[member.guild.id]) autorole[member.guild.id] = {
     role: "off"
@@ -190,12 +195,6 @@ bot.on('guildMemberAdd', (member) => {
   if (!role) return;
 
   member.addRole(role)
-
-  try {
-    join.process(bot, member);
-  } catch (e) {
-    console.error(e.stack);
-  }  
 
 });
 
