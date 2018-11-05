@@ -31,12 +31,21 @@ module.exports.run = (bot, message, args) => {
   
   let sEmbed = new Discord.RichEmbed()
   .setColor("#FF9900")
-  .setTitle("Prefix Set!")
-  .setDescription(`Префик установлен: ${args[0]}`);
+  .addField('**Prefix Set!**', `**Префикс утсновлен ${args[0]}**`)
 
   message.channel.send(sEmbed);
-  let prefix = prefixes[message.guild.id].prefixes
-  message.guild.members.get(bot.user.id).setNickname(`[${prefix}] ${bot.user.username}`);
+  bot.guilds.forEach(guild => {
+    if (!prefixes[guild.id]) prefixes[guild.id] = {
+      prefixes: botconfig.prefix
+    }
+    var prefix = prefixes[nguild.id].prefixes
+    var user = guild.members.get(bot.user.id)
+    if (user.displayName.includes(`[${prefix}]`, 0)) {
+      return;
+    } else {
+      guild.members.get(bot.user.id).setNickname(`[${prefix}] ${guild.members.get(bot.user.id).displayName}`)
+    }
+  })
 }
 
 module.exports.help = {
