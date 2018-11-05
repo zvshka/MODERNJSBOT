@@ -38,7 +38,7 @@ module.exports.run = (bot, message, args) => {
     if (!prefixes[guild.id]) prefixes[guild.id] = {
       prefixes: botconfig.prefix
     }
-    var prefix = prefixes[nguild.id].prefixes
+    var prefix = prefixes[guild.id].prefixes
     var user = guild.members.get(bot.user.id)
     if (user.displayName.includes(`[${prefix}]`, 0)) {
       return;
