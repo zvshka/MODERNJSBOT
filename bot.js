@@ -46,11 +46,15 @@ fs.readdir("./commands/", (err, files) => {
 });
 
 bot.on("ready", () => {
-
   console.log(`Дата: ${Date()}; ${bot.user.username} онлайн на ${bot.guilds.size} серверах!`);
-  bot.user.setActivity("twitch.tv/zvshka", {
-    type: "STREAMING"
-  });
+  bot.user.setPresence({
+    game: {
+      name: 'twitch.tv/zvshka',
+      type: 'STREAMING',
+      url: 'https://www.twitch.tv/zvshka'
+    },
+    status: 'dnd'
+  })
 });
 
 bot.on("ready", () => {
@@ -88,7 +92,7 @@ bot.on("ready", () => {
     if (!prefixes[guild.id]) prefixes[guild.id] = {
       prefixes: botconfig.prefix
     }
-    var prefix = prefixes[nguild.id].prefixes
+    var prefix = prefixes[guild.id].prefixes
     var user = guild.members.get(bot.user.id)
     if (user.displayName.includes(`[${prefix}]`, 0)) {
       return;
@@ -165,7 +169,6 @@ bot.on("message", message => {
   if (!message.member.hasPermission("ADMINISTRATOR")) {
     cooldown.add(message.author.id);
   }
-
 
   let messageArray = message.content.split(" ");
   let cmd = messageArray[0].toLocaleLowerCase();
