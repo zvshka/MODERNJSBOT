@@ -44,7 +44,7 @@ module.exports.run = (bot, message, args) => {
     if (user.displayName.includes(`[${prefix}]`, 0)) {
       return;
     } else {
-      guild.members.get(bot.user.id).setNickname(`[${prefix}] ${guild.members.get(bot.user.id).displayName}`)
+      guild.members.get(bot.user.id).setNickname(`[${prefix}] ${guild.members.get(bot.user.id).displayName.slice(4)}`)
     }
   })
 }
