@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 const fetch = require('node-fetch')
-const botconfig = require("./utils/botconfig.json");
+const botconfig = require('../utils/botconfig.json');
 
 module.exports.run = (bot, message, args) => {
 
