@@ -8,12 +8,16 @@ const join = require('./utils/memberJoined')
 const leave = require('./utils/memberLeaved')
 const kick = require('./utils/memberKicked')
 const ban = require('./utils/memberBanned')
-const fetch = require('node-fetch')
+const guildAdd = require('./utils/onGuildAdd')
 const enves = require('dotenv').config({
   path: './.env'
 })
 let cooldown = new Set();
 let cdseconds = 5;
+const db = require('mongoose')
+const Coins = require('./models/coins.js')
+const Options = require('./models/servOpt.js')
+
 //Считывание папки с командами
 fs.readdir("./commands/", (err, files) => {
 
@@ -58,49 +62,24 @@ bot.on("ready", () => {
 });
 
 bot.on("ready", () => {
-
-  fetch(`${process.env.WARNS_URL}`)
-    .then(res => res.json())
-    .then(warns => fs.writeFile("./utils/warnings.json", JSON.stringify(warns), (err) => {
-      if (err) console.log(err);
-      console.log("Варны загружены")
-    }));
-
-  fetch(`${process.env.COINS_URL}`)
-    .then(res => res.json())
-    .then(coins => fs.writeFile("./utils/coins.json", JSON.stringify(coins), (err) => {
-      if (err) console.log(err);
-      console.log("Монеты загружены")
-    }));
-  if (process.env.KEYFORBOT != 1) {
-    fetch(`${process.env.PREFIXES_URL}`)
-      .then(res => res.json())
-      .then(prefixes => fs.writeFile("./utils/prefixes.json", JSON.stringify(prefixes), (err) => {
-        if (err) console.log(err);
-        console.log("Префиксы загружены")
-      }));
-  }
-  fetch(`${process.env.ROLES_URL}`)
-    .then(res => res.json())
-    .then(roles => fs.writeFile("./utils/autoroles.json", JSON.stringify(roles), (err) => {
-      if (err) console.log(err);
-      console.log("Роли загружены")
-    }));
-
-  bot.guilds.forEach(guild => {
-    var prefixes = JSON.parse(fs.readFileSync("./utils/prefixes.json", "utf8"));
-    if (!prefixes[guild.id]) prefixes[guild.id] = {
-      prefixes: botconfig.prefix
-    }
-    var prefix = prefixes[guild.id].prefixes
-    var user = guild.members.get(bot.user.id)
-    if (user.displayName.includes(`[${prefix}]`, 0)) {
-      return;
-    } else {
-      guild.members.get(bot.user.id).setNickname(`[${prefix}] ${guild.members.get(bot.user.id).displayName}`)
-    }
+  let serverdb = db.connect(process.env.SERVERSDB, {
+    useNewUrlParser: true
+  }).then(res => {
+    bot.guilds.forEach(guild => {
+      Options.findOne({
+        ServerID: guild.id
+      }, (err, opts) => {
+        if (err) {
+          console.log(err.stack)
+        }
+        try {
+          guild.members.get(bot.user.id).setNickname(`[${opts.Prefix}] ${guild.members.get(bot.user.id).displayName.slice(4)}`)
+        } catch (e) {
+          console.log(e.stack)
+        }
+      })
+    })
   })
-
 })
 
 //Исполнение команд
@@ -108,78 +87,109 @@ bot.on("message", message => {
   //Проверка на то что создатель сообщения бот и канал DM
   if (message.author.bot) return
   if (message.channel.type === "dm") return;
-  //Кастомный префикс
-  let prefixes = JSON.parse(fs.readFileSync("./utils/prefixes.json", "utf8"));
-  if (!prefixes[message.guild.id]) {
-    prefixes[message.guild.id] = {
-      prefixes: botconfig.prefix
-    };
-  }
+
   //Монетки :D
-  let coins = JSON.parse(fs.readFileSync("./utils/coins.json", "utf8"))
-  if (!coins[message.guild.id]) {
-    coins[message.guild.id] = {};
-  }
-
-  if (!coins[message.guild.id][message.author.id]) {
-    coins[message.guild.id][message.author.id] = {
-      coins: 0
-    };
-  }
-
-  let coinAmt = Math.floor(Math.random() * 15) + 1;
-  let baseAmt = Math.floor(Math.random() * 15) + 1;
 
   message.guild.fetchMember(message.author).then(m => console.log(`[log]${message.guild.name}: ${m.displayName}: ${message} ${coinAmt}/${baseAmt}`))
 
-  if (coinAmt === baseAmt) {
-    coins[message.guild.id][message.author.id] = {
-      coins: coins[message.guild.id][message.author.id].coins + coinAmt
-    };
-    fs.writeFile("./utils/coins.json", JSON.stringify(coins), (err) => {
-      if (err) console.log(err)
-    });
-
-    fetch(`${process.env.COINS_URL}`, {
-        method: 'PUT',
-        body: JSON.stringify(coins),
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      })
-      .then(res => res.json())
-
-    let coinEmbed = new Discord.RichEmbed()
-      .setAuthor(message.author.username)
-      .setColor("#3de2fa")
-      .addField("💸", `${coinAmt} монет добавлено!`);
-
-    message.channel.send(coinEmbed).then(msg => {
-      msg.delete(5000)
-    });
-  }
-
   //Опять префикс
-  let prefix = prefixes[message.guild.id].prefixes;
-  if (!message.content.startsWith(prefix)) return;
-  if (cooldown.has(message.author.id)) {
-    message.delete();
-    return message.reply("Подожди 5 секунд.")
-  }
-  if (!message.member.hasPermission("ADMINISTRATOR")) {
-    cooldown.add(message.author.id);
-  }
+  let serverdb = db.connect(process.env.SERVERSDB, {
+    useNewUrlParser: true
+  }).then(res => {
+    Options.findOne({
+      ServerID: message.guild.id
+    }, (err, opts) => {
+      if (err) {
+        console.log(err.stack)
+      }
+      if (!opts) {
+        const newOpts = new Options({
+          ServerID: message.guild.id,
+          Prefix: botconfig.prefix,
+          AutoRole: "off"
+        })
+        newOpts.save().catch(err => console.log(err.stack))
+        if (!message.content.startsWith(newOpts.Prefix)) return;
+        if (cooldown.has(message.author.id)) {
+          message.delete();
+          return message.reply("Подожди 5 секунд.")
+        }
+        if (!message.member.hasPermission("ADMINISTRATOR")) {
+          cooldown.add(message.author.id);
+        }
 
-  let messageArray = message.content.split(" ");
-  let cmd = messageArray[0].toLocaleLowerCase();
-  let args = messageArray.slice(1);
+        let messageArray = message.content.split(" ");
+        let cmd = messageArray[0].toLocaleLowerCase();
+        let args = messageArray.slice(1);
 
-  let commandfile = bot.commands.get(cmd.slice(prefix.length));
-  if (commandfile) commandfile.run(bot, message, args);
+        let commandfile = bot.commands.get(cmd.slice(newOpts.Prefix.length));
+        if (commandfile) {
+          commandfile.run(bot, message, args);
+        } else {
+          let coinAmt = Math.floor(Math.random() * 10) + 100;
+          let baseAmt = Math.floor(Math.random() * 10) + 100;
+          if (coinAmt === baseAmt) {
+            let userdb = db.connect(process.env.USERSDB, {
+              useNewUrlParser: true
+            }).then(res => {
+              Coins.findOne({
+                UserID: message.author.id,
+                ServerID: message.guild.id,
+              }, (err, money) => {
+                if (err) {
+                  console.log(err)
+                }
+                if (!money) {
+                  const newMoney = new Coins({
+                    UserID: message.author.id,
+                    ServerID: message.guild.id,
+                    money: coinAmt,
+                  })
+                  newMoney.save().catch(err => console.log(err.stack))
+                } else {
+                  money.money += coinAmt
+                  money.save().catch(err => console.log(err.stack))
+                }
+              })
+            })
 
-  setTimeout(() => {
-    cooldown.delete(message.author.id)
-  }, cdseconds * 1000)
+            let coinEmbed = new Discord.RichEmbed()
+              .setAuthor(message.author.username)
+              .setColor("#3de2fa")
+              .addField("💸", `${coinAmt} монет добавлено!`);
+
+            message.channel.send(coinEmbed).then(msg => {
+              msg.delete(5000)
+            });
+          }
+        }
+
+        setTimeout(() => {
+          cooldown.delete(message.author.id)
+        }, cdseconds * 1000)
+      } else {
+        if (!message.content.startsWith(opts.Prefix)) return;
+        if (cooldown.has(message.author.id)) {
+          message.delete();
+          return message.reply("Подожди 5 секунд.")
+        }
+        if (!message.member.hasPermission("ADMINISTRATOR")) {
+          cooldown.add(message.author.id);
+        }
+
+        let messageArray = message.content.split(" ");
+        let cmd = messageArray[0].toLocaleLowerCase();
+        let args = messageArray.slice(1);
+
+        let commandfile = bot.commands.get(cmd.slice(opts.Prefix.length));
+        if (commandfile) commandfile.run(bot, message, args);
+
+        setTimeout(() => {
+          cooldown.delete(message.author.id)
+        }, cdseconds * 1000)
+      }
+    })
+  })
 
 });
 //Выдача роли когда кто-то вступает и приветствие
@@ -190,22 +200,19 @@ bot.on('guildMemberAdd', (member) => {
     console.error(e.stack);
   }
 
-  let autorole = JSON.parse(fs.readFileSync('./utils/autoroles.json', 'utf8'))
-  if (!autorole[member.guild.id]) autorole[member.guild.id] = {
-    role: "off"
-  }
+  let serverdb = db.connect(process.env.SERVERSDB, {
+    useNewUrlParser: true
+  }).then(res => {
+    Options.findOne({
+      ServerID: message.guild.id
+    }, (err, opts) => {
+      let role = member.guild.roles.find(r => r.name === opts.AutoRole)
 
-  fs.writeFile('./utils/autoroles.json', JSON.stringify(autorole), (err) => {
-    if (err) console.log(err)
+      if (!role) return;
+
+      member.addRole(role)
+    })
   })
-
-  let roles = autorole[member.guild.id].role
-
-  let role = member.guild.roles.find(r => r.name === roles)
-
-  if (!role) return;
-
-  member.addRole(role)
 
 });
 
@@ -228,6 +235,14 @@ bot.on('guildMemberRemove', (member) => {
     console.error(e.stack);
   }
 
+})
+
+bot.on('guildCreate', (guild) => {
+  try {
+    guildAdd.process(bot, guild)
+  } catch (e) {
+    console.log(e.stack)
+  }
 })
 //Логин
 bot.login(process.env.TOKEN)

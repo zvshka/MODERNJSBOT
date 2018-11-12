@@ -1,52 +1,45 @@
 const Discord = require("discord.js");
 const fs = require("fs");
-const fetch = require('node-fetch')
 const botconfig = require('../utils/botconfig.json');
-
+const db = require('mongoose')
+const Options = require('../models/servOpt.js')
+db.connect(process.env.SERVERSDB, {
+  useNewUrlParser: true
+})
 module.exports.run = (bot, message, args) => {
 
-  if(!message.member.hasPermission("ADMINISTRATOR")) return message.reply("Нет.");
-  if(!args[0] || args[0 == "help"]) return message.channel.send({embed: {
-    fields: [{
-      name: "Использование",
-      value: "!prefix <префикс>"
-    }]
-  }}).then(msg => {msg.delete(15000)});
-
-  let prefixes = JSON.parse(fs.readFileSync("./utils/prefixes.json", "utf8"));
-
-  prefixes[message.guild.id] = {
-    prefixes: args[0]
-  };
-
-  fs.writeFile("./utils/prefixes.json", JSON.stringify(prefixes), (err) => {
-    if (err) console.log(err)
+  if (!message.member.hasPermission("ADMINISTRATOR")) return message.reply("Нет.");
+  if (!args[0] || args[0 == "help"]) return message.channel.send({
+    embed: {
+      fields: [{
+        name: "Использование",
+        value: "!prefix <префикс>"
+      }]
+    }
+  }).then(msg => {
+    msg.delete(15000)
   });
-  fetch(`${process.env.PREFIXES_URL}`,  { 
-    method: 'PUT',
-    body:    JSON.stringify(prefixes),
-    headers: { 'Content-Type': 'application/json' },
-  })
-  .then(res => res.json())
-  .then(json => console.log(json))
-  
-  let sEmbed = new Discord.RichEmbed()
-  .setColor("#FF9900")
-  .addField('**Prefix Set!**', `**Префикс утсновлен ${args[0]}**`)
 
-  message.channel.send(sEmbed);
-  bot.guilds.forEach(guild => {
-    if (!prefixes[guild.id]) prefixes[guild.id] = {
-      prefixes: botconfig.prefix
+  let sEmbed = new Discord.RichEmbed()
+    .setColor("#FF9900")
+    .addField('**Prefix Set!**', `**Префикс утсновлен ${args[0]}**`)
+
+  Options.findOne({
+    ServerID: message.guild.id
+  }, (err, opts) => {
+    if (err) {
+      console.log(err)
     }
-    var prefix = prefixes[guild.id].prefixes
-    var user = guild.members.get(bot.user.id)
-    if (user.displayName.includes(`[${prefix}]`, 0)) {
-      return;
-    } else {
-      guild.members.get(bot.user.id).setNickname(`[${prefix}] ${guild.members.get(bot.user.id).displayName.slice(4)}`)
+    try {
+      opts.Prefix = args[0]
+      opts.save().catch(err => console.log(err.stack))
+      message.guild.members.get(bot.user.id).setNickname(`[${opts.Prefix}] ${message.guild.members.get(bot.user.id).displayName.slice(4)}`)
+    } catch (e) {
+      console.log(e.stack)
     }
   })
+ 
+  message.channel.send(sEmbed);
 }
 
 module.exports.help = {

@@ -1,56 +1,84 @@
 const Discord = require("discord.js");
 const fs = require("fs");
-let coins = JSON.parse(fs.readFileSync("./utils/coins.json", "utf8"));
-const fetch = require('node-fetch')
-
-
+const db = require('mongoose')
+const Coins = require("../models/coins.js")
+db.connect(process.env.USERSDB, {
+  useNewUrlParser: true
+})
 module.exports.run = (bot, message, args) => {
   //!pay @isatisfied 59345
+  let pUser = message.guild.member(message.mentions.users.first());
 
-
-
-  if(!coins[message.author.id]){
-    return message.reply("Нет монет!")
-  }
-
-  let pUser = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
-
-  if(!pUser) return message.reply(`ничего не указанно`).then(msg => {msg.delete(5000)})
-  
-  if(!args[1]) return message.reply('Не указанно кол-во монет')
-
-  if(!coins[pUser.id]){
-    coins[pUser.id] = {
-      coins: 0
-    };
-  }
-
-  let pCoins = coins[pUser.id].coins;
-  let sCoins = coins[message.author.id].coins;
-
-  if(sCoins < args[0]) return message.reply("Не хватает монет!").then(msg => {msg.delete(5000)});
-
-  coins[message.author.id] = {
-    coins: sCoins - parseInt(args[1])
-  };
-
-  coins[pUser.id] = {
-    coins: pCoins + parseInt(args[1])
-  };
-
-  message.channel.send(`${message.author} дал ${pUser} ${args[1]} монет.`).then(msg => {msg.delete(5000)});
-
-  fs.writeFile("./utils/coins.json", JSON.stringify(coins), (err) => {
-    if(err) cosole.log(err)
-  });
-
-  fetch(`${process.env.COINS_URL}`,  { 
-    method: 'PUT',
-    body:    JSON.stringify(coins),
-    headers: { 'Content-Type': 'application/json' },
+  if (!pUser) return message.reply(`ничего не указанно`).then(msg => {
+    msg.delete(5000)
   })
-  .then(res => res.json())
-  .then(json => console.log(json))
+
+  if (!args[1]) return message.reply('Не указанно кол-во монет')
+
+  Coins.findOne({
+    SeverID: message.guild.id,
+    UserID: message.author.id
+  }, (err, user1) => {
+    if (err) {
+      console.log(err.stack)
+    }
+    if (user1) {
+      Coins.findOne({
+        SeverID: message.guild.id,
+        UserID: pUser.id
+      }, (err, user2) => {
+        if (err) {
+          console.log(err.stack)
+        }
+        if (user2) {
+          user2.money = user2.money + parseInt(args[0])
+          user2.save().catch(err => console.log(err.stack))
+          user1.money = user1.money - parseInt(args[0])
+          user1.save().catch(err => console.log(err.stack))
+          message.channel.send(`${message.author} дал ${pUser} ${args[1]} монет.`).then(msg => {
+            msg.delete(5000)
+          });
+        } else if (user1.money >= args[0]) {
+          const newUser2 = new Coins({
+            SeverID: message.guild.id,
+            UserID: pUser.id,
+            money: 0 + parseInt(args[0])
+          })
+          newUser2.save().catch(err => console.log(err.stack))
+          user1.money = user1.money - parseInt(args[0])
+          user1.save().catch(err => console.log(err.stack))
+          message.channel.send(`${message.author} дал ${pUser} ${args[1]} монет.`).then(msg => {
+            msg.delete(5000)
+          });
+        } else if (user1.money < args[0]) {
+          message.channel.send({
+            embed: {
+              fields: [{
+                name: "**Error**",
+                value: "У вас не хватает монет"
+              }]
+            }
+          })
+        }
+      })
+    } else {
+      const newUser1 = new Coins({
+        SeverID: message.guild.id,
+        User: message.author.id,
+        money: 0
+      })
+      newUser1.save().catch(err => console.log(err.stack))
+      message.channel.send({
+        embed: {
+          fields: [{
+            name: "**Error**",
+            value: "У вас не хватает монет"
+          }]
+        }
+      })
+    }
+  })
+
 }
 
 module.exports.help = {

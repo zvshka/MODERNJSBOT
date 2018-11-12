@@ -1,87 +1,92 @@
 const Discord = require("discord.js");
 const errors = require("../utils/errors.js");
 const fs = require('fs')
-const fetch = require('node-fetch')
-
+const db = require('mongoose')
+const Options = require('../models/servOpt.js')
+db.connect(process.env.SERVERSDB, {
+    useNewUrlParser: true
+})
 module.exports.run = (bot, message, args) => {
-    if(!message.member.hasPermission("ADMINISTRATOR")) return errors.noPerms(message, "ADMINISTRATOR")
-    let autorole = JSON.parse(fs.readFileSync('./utils/autoroles.json', 'utf8'))
-    if(!args[0]) {
-        autorole[message.guild.id] = {
-            role: "Гость"
-        }
-        fs.writeFile('./utils/autoroles.json', JSON.stringify(autorole), (err) =>{
-            if(err) console.log(err)
+    if (!message.member.hasPermission("ADMINISTRATOR")) return errors.noPerms(message, "ADMINISTRATOR")
+    if (!args[0]) {
+        message.channel.send({
+            embed: {
+                fields: [{
+                    name: "Успех",
+                    value: (`Установлена стандартная автороль Гость`)
+                }]
+            }
         })
-        
-        fetch(`${process.env.ROLES_URL}`,  { 
-            method: 'PUT',
-            body:    JSON.stringify(autorole),
-            headers: { 'Content-Type': 'application/json' },
+        Options.findOne({
+            ServerID: message.guild.id
+        }, (err, opts) => {
+            if (err) {
+                console.log(err.stack)
+            }
+            opts.AutoRole = "Гость"
+            opts.save().catch(err => console.log(err.stack))
         })
-        .then(res => res.json())
-        .then(json => console.log(json))
-        message.channel.send({embed:{
-            fields: [{
-                name: "Успех",
-                value: (`Установлена стандартная автороль Гость`)
-            }]
-        }})
-    
     }
-    
-    if(args[0] === 'on') {
+
+    if (args[0] === 'on') {
         let roles = args.join(" ").slice(3)
         let role = message.guild.roles.find(r => r.name === roles)
-        autorole[message.guild.id] = {
-            role: role.name
+        if (role) {
+            message.channel.send({
+                embed: {
+                    fields: [{
+                        name: "Успех",
+                        value: (`Установлена автороль: ${roles}`)
+                    }]
+                }
+            })
+            Options.findOne({
+                ServerID: message.guild.id
+            }, (err, opts) => {
+                if (err) {
+                    console.log(err.stack)
+                }
+                opts.AutoRole = role.name
+                opts.save().catch(err => console.log(err.stack))
+            })
+        } else {
+            return message.channel.send({
+                embed: {
+                    fields: [{
+                        name: "**Error**",
+                        value: "На сервере нет такой роли"
+                    }]
+                }
+            })
         }
-        fs.writeFile('./utils/autoroles.json', JSON.stringify(autorole), (err) =>{
-            if(err) console.log(err)
-        })
-        fetch(`${process.env.ROLES_URL}`,  { 
-            method: 'PUT',
-            body:    JSON.stringify(autorole),
-            headers: { 'Content-Type': 'application/json' },
-        })
-        .then(res => res.json())
-        .then(json => console.log(json))
-        message.channel.send({embed:{
-            fields: [{
-                name: "Успех",
-                value: (`Установлена автороль: ${rolees}`)
-            }]
-        }})
     }
-    
-    if(args[0] === 'off') {
-        delete autorole[message.guild.id]
-        fs.writeFile('./utils/autoroles.json', JSON.stringify(autorole), (err) =>{
-            if(err) console.log(err)
+
+    if (args[0] === 'off') {
+
+        message.channel.send({
+            embed: {
+                fields: [{
+                    name: "Успех",
+                    value: (`Автороль удалена`)
+                }]
+            }
         })
-        fetch(`${process.env.ROLES_URL}`,  { 
-            method: 'PUT',
-            body:    JSON.stringify(autorole),
-            headers: { 'Content-Type': 'application/json' },
+        Options.findOne({
+            ServerID: message.guild.id
+        }, (err, opts) => {
+            if (err) {
+                console.log(err.stack)
+            }
+            opts.AutoRole = "off"
+            opts.save().catch(err => console.log(err.stack))
         })
-        .then(res => res.json())
-        .then(json => console.log(json))
-        message.channel.send({embed:{
-            fields: [{
-                name: "Успех",
-                value: (`Автороль удалена`)
-            }]
-        }})
     }
-    //    if(!autorole) guid.createRole({
-    //        name: ``
-    //    })
 }
 
 
 module.exports.help = {
     name: "autorole",
-    usage: "<add/off> <роль>",
+    usage: "<on/off> <роль>",
     desc: "автороль",
     group: "mod"
 }

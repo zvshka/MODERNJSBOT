@@ -1,29 +1,32 @@
 const Discord = require("discord.js");
 const fs = require("fs");
-
+const db = require('mongoose')
+const Options = require('../models/servOpt.js')
+db.connect(process.env.SERVERSDB, {
+  useNewUrlParser: true
+})
 module.exports.run = (bot, message, args) => {
   var botconfig = require('../utils/botconfig.json')
-  let prefixes = JSON.parse(fs.readFileSync("./utils/prefixes.json", "utf8"));
-  let autorole = JSON.parse(fs.readFileSync('./utils/autoroles.json', 'utf8'))
-  if (!autorole[message.guild.id]) autorole[message.guild.id] = {
-    role: "off"
-  }
-
-  if (!prefixes[message.guild.id]) {
-    prefixes[message.guild.id] = {
-      prefixes: botconfig.prefix
-    };
-  }
 
   let logs = message.guild.channels.find(c => c.name === 'logs')
-
-  let testembed = new Discord.RichEmbed()
-    .addField("Префикс", prefixes[message.guild.id].prefixes, true)
-    .addField("Log-канал", logs, true)
-    .addField("autorole", autorole[message.guild.id].role, true)
-    .setThumbnail(bot.user.avatarURL)
-    .addField("Владелец сервера", message.guild.owner, true)
-  message.channel.send(testembed)
+  Options.findOne({
+    ServerID: message.guild.id
+  }, (err, opts) => {
+    if (err) {
+      console.log(err)
+    }
+    try {
+      let testembed = new Discord.RichEmbed()
+        .addField("Префикс", opts.Prefix, true)
+        .addField("Log-канал", logs, true)
+        .addField("autorole", opts.AutoRole, true)
+        .setThumbnail(bot.user.avatarURL)
+        .addField("Владелец сервера", message.guild.owner, true)
+      message.channel.send(testembed)
+    } catch (e) {
+      console.log(e.stack)
+    }
+  })
 }
 
 module.exports.help = {

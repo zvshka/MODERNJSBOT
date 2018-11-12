@@ -2,10 +2,13 @@ const Discord = require("discord.js");
 const fs = require("fs");
 const ms = require("ms");
 const errors = require('../utils/errors')
-const fetch = require('node-fetch')
+const db = require('mongoose')
+const Warns = require("../models/warns.js")
 
+db.connect(process.env.USERSDB, {
+  useNewUrlParser: true
+})
 module.exports.run = (bot, message, args) => {
-  let warns = JSON.parse(fs.readFileSync("./utils/warnings.json", "utf8"));
   if (!message.member.hasPermission("ADMINISTRATOR")) return errors.noPerms(message, "ADMINISTRATOR").then(msg => {
     msg.delete(5000)
   });
@@ -18,9 +21,7 @@ module.exports.run = (bot, message, args) => {
       description: "Не указан человек"
     }
   });
-  if (wUser.hasPermission("MANAGE_MESSAGES")) return message.reply("They waaaay too kewl").then(msg => {
-    msg.delete(5000)
-  });
+
 
   let reason = args.join(" ").slice(22);
   if (!reason) return message.channel.send({
@@ -33,59 +34,60 @@ module.exports.run = (bot, message, args) => {
     }
   })
 
-  if(!warns[message.guild.id]) warns[message.guild.id] = {}
+  Warns.findOne({
+    UserID: wUser.id,
+    ServerID: message.guild.id,
+  }, (err, warn) => {
+    if (err) {
+      console.log(err)
+    }
+    if (!warn) {
+      const newWarns = new Warns({
+        UserID: wUser.id,
+        ServerID: message.guild.id,
+        warns: 1,
+      })
+      newWarns.save().catch(err => console.log(err))
+      
+      let warnEmbed = new Discord.RichEmbed()
+        .setDescription("Warns")
+        .setAuthor(message.author.username)
+        .setColor("#fc6400")
+        .addField("Заварнен", `<@${wUser.id}>`)
+        .addField("Заварнен в", message.channel)
+        .addField("Варнов", newWarns.warns)
+        .addField("Причина", reason)
+        .setFooter(`${message.author.username}`, message.author.avatarURL)
+      let warnchannel = message.guild.channels.find(c => c.name === "logs");
+      if (!warnchannel) return message.reply("Канал не найден").then(msg => {
+        msg.delete(5000)
+      });
 
-  if(!warns[message.guild.id][wUser.id]) warns[message.guild.id][wUser.id] = {
-    warns: 0
-  }
+      message.delete()
+      warnchannel.send(warnEmbed);
+    } else {
+      warn.warns += 1
+      warn.save().catch(err => console.log(err.stack))
 
-  warns[message.guild.id][wUser.id].warns++
+      let warnEmbed = new Discord.RichEmbed()
+        .setDescription("Warns")
+        .setAuthor(message.author.username)
+        .setColor("#fc6400")
+        .addField("Заварнен", `<@${wUser.id}>`)
+        .addField("Заварнен в", message.channel)
+        .addField("Варнов", warn.warns)
+        .addField("Причина", reason)
+        .setFooter(`${message.author.username}`, message.author.avatarURL)
+      let warnchannel = message.guild.channels.find(c => c.name === "logs");
+      if (!warnchannel) return message.reply("Канал не найден").then(msg => {
+        msg.delete(5000)
+      });
 
-  fs.writeFile("./utils/warnings.json", JSON.stringify(warns), (err) => {
-    if (err) console.log(err)
-  });
-   
-  fetch(`${process.env.WARNS_URL}`,  { 
-    method: 'PUT',
-    body:    JSON.stringify(warns),
-    headers: { 'Content-Type': 'application/json' },
+      message.delete()
+      warnchannel.send(warnEmbed);
+    }
   })
-  .then(res => res.json())
-  .then(json => console.log(json))
-  let warnEmbed = new Discord.RichEmbed()
-    .setDescription("Warns")
-    .setAuthor(message.author.username)
-    .setColor("#fc6400")
-    .addField("Заварнен", `<@${wUser.id}>`)
-    .addField("Заварнен в", message.channel)
-    .addField("Варнов", warns[wUser.id].warns)
-    .addField("Причина", reason)
-    .setFooter(`${message.author.username}`, message.author.avatarURL)
-  let warnchannel = message.guild.channels.find(c => c.name === "logs");
-  if (!warnchannel) return message.reply("Канал не найден").then(msg => {
-    msg.delete(5000)
-  });
 
-  message.delete()
-  warnchannel.send(warnEmbed);
-
-  if (warns[message.guild.id][wUser.id].warns == 4) {
-    let muterole = message.guild.roles.find(r => r.name === "BGuy");
-    if (!muterole) return message.reply("Нет роли.");
-
-    let mutetime = "10s";
-    await (wUser.addRole(muterole.id));
-    message.channel.send(`<@${wUser.id}> Замучен`);
-
-    setTimeout(function () {
-      wUser.removeRole(muterole.id)
-      message.reply(`<@${wUser.id}> Размучен.`)
-    }, ms(mutetime))
-  }
-  if (warns[message.guild.id][wUser.id].warns == 10) {
-    message.guild.member(wUser).ban(reason);
-    message.reply(`<@${wUser.id}> Забанен.`)
-  }
 }
 
 module.exports.help = {
