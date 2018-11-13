@@ -22,7 +22,7 @@ var prefix = ""
 
 //Считывание папки с командами
 fs.readdir("./commands/", (err, files) => {
-
+/*
   //if (err) console.log(err);
   let jsfile = files.filter(file => file.split(".").pop() === "js");
   if (jsfile.length <= 0) {
@@ -48,7 +48,7 @@ fs.readdir("./commands/", (err, files) => {
       }
     })
   });
-
+*/
 });
 
 bot.on("ready", () => {
