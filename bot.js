@@ -70,7 +70,7 @@ bot.on("ready", () => {
 })
 
 //Исполнение команд
-bot.on("message", msg => {
+bot.on("message", (msg) => {
   //Проверка на то что создатель сообщения бот и канал DM
   if (msg.author.bot) return
   if (msg.channel.type === "dm") return;
