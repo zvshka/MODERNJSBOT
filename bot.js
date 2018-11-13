@@ -18,6 +18,8 @@ const db = require('mongoose')
 const Coins = require('./models/coins.js')
 const Options = require('./models/servOpt.js')
 
+var prefix = ""
+
 //Считывание папки с командами
 fs.readdir("./commands/", (err, files) => {
 
@@ -106,6 +108,67 @@ bot.on("message", (message) => {
 
   message.guild.fetchMember(message.author).then(m => console.log(`[log]${message.guild.name}: ${m.displayName}: ${message}`))
 
+  function cmdrun(prefix) {
+    if (!message.content.startsWith(prefix)) return;
+    if (cooldown.has(message.author.id)) {
+      message.delete();
+      return message.reply("Подожди 5 секунд.")
+    }
+    if (!message.member.hasPermission("ADMINISTRATOR")) {
+      cooldown.add(message.author.id);
+    }
+
+    let messageArray = message.content.split(" ");
+    let cmd = messageArray[0].toLocaleLowerCase();
+    let args = messageArray.slice(1);
+
+    let commandfile = bot.commands.get(cmd.slice(prefix.length));
+    if (commandfile) {
+      commandfile.run(bot, message, args);
+    } else {
+      let coinAmt = Math.floor(Math.random() * 10) + 100;
+      let baseAmt = Math.floor(Math.random() * 10) + 100;
+      if (coinAmt === baseAmt) {
+        let userdb = db.connect(process.env.USERSDB, {
+          useNewUrlParser: true
+        }).then(res => {
+          Coins.findOne({
+            UserID: message.author.id,
+            ServerID: message.guild.id,
+          }, (err, money) => {
+            if (err) {
+              console.log(err)
+            }
+            if (!money) {
+              const newMoney = new Coins({
+                UserID: message.author.id,
+                ServerID: message.guild.id,
+                money: coinAmt,
+              })
+              newMoney.save().catch(err => console.log(err.stack))
+            } else {
+              money.money += coinAmt
+              money.save().catch(err => console.log(err.stack))
+            }
+          })
+        })
+
+        let coinEmbed = new Discord.RichEmbed()
+          .setAuthor(message.author.username)
+          .setColor("#3de2fa")
+          .addField("💸", `${coinAmt} монет добавлено!`);
+
+        message.channel.send(coinEmbed).then(msg => {
+          msg.delete(5000)
+        });
+      }
+    }
+
+    setTimeout(() => {
+      cooldown.delete(message.author.id)
+    }, cdseconds * 1000)
+  }
+
   //Опять префикс
   let serverdb = db.connect(process.env.SERVERSDB, {
     useNewUrlParser: true
@@ -123,84 +186,9 @@ bot.on("message", (message) => {
           AutoRole: "off"
         })
         newOpts.save().catch(err => console.log(err.stack))
-        if (!message.content.startsWith(newOpts.Prefix)) return;
-        if (cooldown.has(message.author.id)) {
-          message.delete();
-          return message.reply("Подожди 5 секунд.")
-        }
-        if (!message.member.hasPermission("ADMINISTRATOR")) {
-          cooldown.add(message.author.id);
-        }
-
-        let messageArray = message.content.split(" ").catch(err => console.log(err));
-        let cmd = messageArray[0].toLocaleLowerCase();
-        let args = messageArray.slice(1);
-
-        let commandfile = bot.commands.get(cmd.slice(newOpts.Prefix.length));
-        if (commandfile) {
-          commandfile.run(bot, message, args);
-        } else {
-          let coinAmt = Math.floor(Math.random() * 10) + 100;
-          let baseAmt = Math.floor(Math.random() * 10) + 100;
-          if (coinAmt === baseAmt) {
-            let userdb = db.connect(process.env.USERSDB, {
-              useNewUrlParser: true
-            }).then(res => {
-              Coins.findOne({
-                UserID: message.author.id,
-                ServerID: message.guild.id,
-              }, (err, money) => {
-                if (err) {
-                  console.log(err)
-                }
-                if (!money) {
-                  const newMoney = new Coins({
-                    UserID: message.author.id,
-                    ServerID: message.guild.id,
-                    money: coinAmt,
-                  })
-                  newMoney.save().catch(err => console.log(err.stack))
-                } else {
-                  money.money += coinAmt
-                  money.save().catch(err => console.log(err.stack))
-                }
-              })
-            })
-
-            let coinEmbed = new Discord.RichEmbed()
-              .setAuthor(message.author.username)
-              .setColor("#3de2fa")
-              .addField("💸", `${coinAmt} монет добавлено!`);
-
-            message.channel.send(coinEmbed).then(msg => {
-              msg.delete(5000)
-            });
-          }
-        }
-
-        setTimeout(() => {
-          cooldown.delete(message.author.id)
-        }, cdseconds * 1000)
+        cmdrun(newOpts.Prefix)
       } else {
-        if (!message.content.startsWith(opts.Prefix)) return;
-        if (cooldown.has(message.author.id)) {
-          message.delete();
-          return message.reply("Подожди 5 секунд.")
-        }
-        if (!message.member.hasPermission("ADMINISTRATOR")) {
-          cooldown.add(message.author.id);
-        }
-
-        let messageArray = message.content.split(" ").catch(err => console.log(err));
-        let cmd = messageArray[0].toLocaleLowerCase();
-        let args = messageArray.slice(1);
-
-        let commandfile = bot.commands.get(cmd.slice(opts.Prefix.length));
-        if (commandfile) commandfile.run(bot, message, args);
-
-        setTimeout(() => {
-          cooldown.delete(message.author.id)
-        }, cdseconds * 1000)
+        cmdrun(opts.Prefix)
       }
     })
   })
