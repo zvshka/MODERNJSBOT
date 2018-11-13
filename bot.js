@@ -3,7 +3,7 @@ const Discord = require("discord.js");
 const bot = new Discord.Client();
 const join = require('./utils/memberJoined')
 const leave = require('./utils/memberLeaved')
-const bk = require('./utils/memberBanned')
+//const bk = require('./dev/memberBanned')
 const guildAdd = require('./utils/onGuildAdd')
 const enves = require('dotenv').config({
   path: './.env'
@@ -15,7 +15,7 @@ const Coins = require('./models/coins')
 const Options = require('./models/servOpt')
 
 bot.on('message', msg => {
-  console.log(msg.content)
+  console.log("content:" + msg.content)
   if (msg.author.bot) return
   if (msg.channel.type === "dm") return;
 
@@ -29,7 +29,7 @@ bot.on('message', msg => {
       cooldown.add(msg.author.id);
     }
     let args = msg.content.slice(prefix.length).split(' ')
-    console.log(args)
+    console.log("args:" + args)
     let cmd = args.shift().toLowerCase();
     try {
       let commandfile = require(`./commands/${cmd}`)
@@ -101,11 +101,7 @@ bot.on('message', msg => {
         newOpts.save().catch(err => console.log(err.stack))
         cmdrun(newOpts.Prefix)
       } else {
-        try {
-          cmdrun(opts.Prefix)
-        } catch (e) {
-          console.log(err)
-        }
+        cmdrun(opts.Prefix)
       }
     })
   })
