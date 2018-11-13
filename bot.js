@@ -22,7 +22,7 @@ const Options = require('./models/servOpt.js')
 fs.readdir("./commands/", (err, files) => {
 
   if (err) console.log(err);
-  let jsfile = files.filter(f => f.split(".").pop() === "js");
+  let jsfile = files.filter(f => f.split(".").pop() === "js").catch(err => console.log(err));
   if (jsfile.length <= 0) {
     console.log("не найдены команды.");
     return;
@@ -132,7 +132,7 @@ bot.on("message", (message) => {
           cooldown.add(message.author.id);
         }
 
-        let messageArray = message.content.split(" ");
+        let messageArray = message.content.split(" ").catch(err => console.log(err));
         let cmd = messageArray[0].toLocaleLowerCase();
         let args = messageArray.slice(1);
 
@@ -191,7 +191,7 @@ bot.on("message", (message) => {
           cooldown.add(message.author.id);
         }
 
-        let messageArray = message.content.split(" ");
+        let messageArray = message.content.split(" ").catch(err => console.log(err));
         let cmd = messageArray[0].toLocaleLowerCase();
         let args = messageArray.slice(1);
 
