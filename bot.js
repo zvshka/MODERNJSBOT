@@ -22,7 +22,7 @@ const Options = require('./models/servOpt.js')
 fs.readdir("./commands/", (err, files) => {
 
   if (err) console.log(err);
-  let jsfile = files.filter(f => f.split(".").pop() === "js").catch(err => console.log(err));
+  let jsfile = files.filter(f => f.split(".").pop() === "js");
   if (jsfile.length <= 0) {
     console.log("не найдены команды.");
     return;
@@ -47,7 +47,7 @@ fs.readdir("./commands/", (err, files) => {
     })
   });
 
-});
+}).catch(err => console.log(err));
 
 bot.on("ready", () => {
   console.log(`Дата: ${Date()}; ${bot.user.username} онлайн на ${bot.guilds.size} серверах!`);
