@@ -79,11 +79,17 @@ bot.on("ready", () => {
             AutoRole: "off"
           })
           newGuild.save().catch(err => console.log(err.stack))
-        }
-        try {
-          guild.members.get(bot.user.id).setNickname(`[${opts.Prefix}] ${guild.members.get(bot.user.id).displayName.slice(4)}`)
-        } catch (e) {
-          console.log(e.stack)
+          try {
+            guild.members.get(bot.user.id).setNickname(`[${newGuild.Prefix}] ${guild.members.get(bot.user.id).displayName.slice(4)}`)
+          } catch (e) {
+            console.log(e.stack)
+          }
+        } else {
+          try {
+            guild.members.get(bot.user.id).setNickname(`[${opts.Prefix}] ${guild.members.get(bot.user.id).displayName.slice(4)}`)
+          } catch (e) {
+            console.log(e.stack)
+          }
         }
       })
     })
@@ -98,7 +104,7 @@ bot.on("message", message => {
 
   //Монетки :D
 
-  message.guild.fetchMember(message.author).then(m => console.log(`[log]${message.guild.name}: ${m.displayName}: ${message} ${coinAmt}/${baseAmt}`))
+  message.guild.fetchMember(message.author).then(m => console.log(`[log]${message.guild.name}: ${m.displayName}: ${message}`))
 
   //Опять префикс
   let serverdb = db.connect(process.env.SERVERSDB, {
