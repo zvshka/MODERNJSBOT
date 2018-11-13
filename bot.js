@@ -88,6 +88,7 @@ bot.on("message", msg => {
       cooldown.add(msg.author.id);
     }
     let args = msg.content.slice(prefix.length).trim().split(' ')
+    console.log(args)
     let cmd = args.shift().toLowerCase();
     try {
       let commandfile = require(`./commands/${cmd}`)
