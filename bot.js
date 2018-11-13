@@ -107,6 +107,7 @@ bot.on("message", msg => {
   //Монетки :D
 
   let messageArray = msg.content.split(" ");
+  console.log(messageArray, msg.content,)
   let cmd = messageArray[0].toLocaleLowerCase();
   let args = messageArray.slice(1);
 
