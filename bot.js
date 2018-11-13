@@ -104,7 +104,7 @@ bot.on("message", msg => {
   if (msg.author.bot) return
   if (msg.channel.type === "dm") return;
 
-  let msgcontent = msg.content
+/*  let msgcontent = msg.content
   //Монетки :D
 
   let messageArray = msgcontent.split(" ");
@@ -198,7 +198,7 @@ bot.on("message", msg => {
       }
     })
   })
-
+*/
 });
 //Выдача роли когда кто-то вступает и приветствие
 bot.on('guildMemberAdd', (member) => {
