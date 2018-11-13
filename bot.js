@@ -104,9 +104,10 @@ bot.on("message", msg => {
   if (msg.author.bot) return
   if (msg.channel.type === "dm") return;
 
+  let msgcontent = msg.content
   //Монетки :D
 
-  let messageArray = msg.content.split(" ");
+  let messageArray = msgcontent.split(" ");
   console.log(messageArray, msg.content,)
   let cmd = messageArray[0].toLocaleLowerCase();
   let args = messageArray.slice(1);
