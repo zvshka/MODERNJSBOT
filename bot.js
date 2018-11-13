@@ -21,35 +21,6 @@ const Options = require('./models/servOpt.js')
 var prefix = ""
 
 //Считывание папки с командами
-fs.readdir("./commands/", (err, files) => {
-/*
-  //if (err) console.log(err);
-  let jsfile = files.filter(file => file.split(".").pop() === "js");
-  if (jsfile.length <= 0) {
-    console.log("не найдены команды.");
-    return;
-  }
-
-  jsfile.forEach((f, i) => {
-    var help = JSON.parse(fs.readFileSync("./utils/help.json", "utf8"))
-    let props = require(`./commands/${f}`);
-    console.log(`${f} загружено!`);
-    bot.commands.set(props.help.name, props);
-    help[props.help.name] = {
-      name: props.help.name,
-      usage: props.help.usage,
-      desc: props.help.desc,
-      group: props.help.group
-    }
-
-    fs.writeFileSync("./utils/help.json", JSON.stringify(help), (err) => {
-      if (err) {
-        console.log(err)
-      }
-    })
-  });
-*/
-});
 
 bot.on("ready", () => {
   console.log(`Дата: ${Date()}; ${bot.user.username} онлайн на ${bot.guilds.size} серверах!`);
@@ -103,12 +74,9 @@ bot.on("message", msg => {
   //Проверка на то что создатель сообщения бот и канал DM
   if (msg.author.bot) return
   if (msg.channel.type === "dm") return;
-
-/*  let msgcontent = msg.content
   //Монетки :D
 
-  let messageArray = msgcontent.split(" ");
-  console.log(messageArray, msg.content,)
+  let messageArray = msg.content.split(" ");
   let cmd = messageArray[0].toLocaleLowerCase();
   let args = messageArray.slice(1);
 
@@ -124,53 +92,57 @@ bot.on("message", msg => {
       cooldown.add(msg.author.id);
     }
 
-    let commandfile = bot.commands.get(cmd.slice(prefix.length));
-    if (commandfile) {
-      commandfile.run(bot, msg, args);
-    } else {
-      let coinAmt = Math.floor(Math.random() * 10) + 100;
-      let baseAmt = Math.floor(Math.random() * 10) + 100;
-      if (coinAmt === baseAmt) {
-        let userdb = db.connect(process.env.USERSDB, {
-          useNewUrlParser: true
-        }).then(res => {
-          Coins.findOne({
-            UserID: msg.author.id,
-            ServerID: msg.guild.id,
-          }, (err, money) => {
-            if (err) {
-              console.log(err)
-            }
-            if (!money) {
-              const newMoney = new Coins({
-                UserID: msg.author.id,
-                ServerID: msg.guild.id,
-                money: coinAmt,
-              })
-              newMoney.save().catch(err => console.log(err.stack))
-            } else {
-              money.money += coinAmt
-              money.save().catch(err => console.log(err.stack))
-            }
+    try {
+      let commandfile = require(`./commands/${cmd.slice(1)}`)
+      if (commandfile) {
+        commandfile.run(bot, msg, args);
+      } else {
+        let coinAmt = Math.floor(Math.random() * 10) + 100;
+        let baseAmt = Math.floor(Math.random() * 10) + 100;
+        if (coinAmt === baseAmt) {
+          let userdb = db.connect(process.env.USERSDB, {
+            useNewUrlParser: true
+          }).then(res => {
+            Coins.findOne({
+              UserID: msg.author.id,
+              ServerID: msg.guild.id,
+            }, (err, money) => {
+              if (err) {
+                console.log(err)
+              }
+              if (!money) {
+                const newMoney = new Coins({
+                  UserID: msg.author.id,
+                  ServerID: msg.guild.id,
+                  money: coinAmt,
+                })
+                newMoney.save().catch(err => console.log(err.stack))
+              } else {
+                money.money += coinAmt
+                money.save().catch(err => console.log(err.stack))
+              }
+            })
           })
-        })
 
-        let coinEmbed = new Discord.RichEmbed()
-          .setAuthor(msg.author.username)
-          .setColor("#3de2fa")
-          .addField("💸", `${coinAmt} монет добавлено!`);
+          let coinEmbed = new Discord.RichEmbed()
+            .setAuthor(msg.author.username)
+            .setColor("#3de2fa")
+            .addField("💸", `${coinAmt} монет добавлено!`);
 
-        msg.channel.send(coinEmbed).then(msg => {
-          msg.delete(5000)
-        });
+          msg.channel.send(coinEmbed).then(msg => {
+            msg.delete(5000)
+          });
+        }
       }
+
+      setTimeout(() => {
+        cooldown.delete(msg.author.id)
+      }, cdseconds * 1000)
+
+    } catch (err) {
+      console.log(err)
     }
-
-    setTimeout(() => {
-      cooldown.delete(msg.author.id)
-    }, cdseconds * 1000)
   }
-
   //Опять префикс
   let serverdb = db.connect(process.env.SERVERSDB, {
     useNewUrlParser: true
@@ -191,14 +163,14 @@ bot.on("message", msg => {
         cmdrun(newOpts.Prefix)
       } else {
         try {
-        cmdrun(opts.Prefix)
-        } catch(e) {
+          cmdrun(opts.Prefix)
+        } catch (e) {
           console.log(err)
         }
       }
     })
   })
-*/
+
 });
 //Выдача роли когда кто-то вступает и приветствие
 bot.on('guildMemberAdd', (member) => {
