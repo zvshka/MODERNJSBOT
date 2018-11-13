@@ -47,7 +47,7 @@ fs.readdir("./commands/", (err, files) => {
     })
   });
 
-}).catch(err => console.log(err));
+});
 
 bot.on("ready", () => {
   console.log(`Дата: ${Date()}; ${bot.user.username} онлайн на ${bot.guilds.size} серверах!`);
