@@ -188,7 +188,11 @@ bot.on("message", msg => {
         newOpts.save().catch(err => console.log(err.stack))
         cmdrun(newOpts.Prefix)
       } else {
+        try {
         cmdrun(opts.Prefix)
+        } catch(e) {
+          console.log(err)
+        }
       }
     })
   })
