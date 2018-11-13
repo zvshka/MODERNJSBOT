@@ -71,7 +71,7 @@ bot.on("ready", () => {
 
 //Исполнение команд
 bot.on("message", (msg) => {
-  //Проверка на то что создатель сообщения бот и канал DM
+  if(msg) {//Проверка на то что создатель сообщения бот и канал DM
   if (msg.author.bot) return
   if (msg.channel.type === "dm") return;
   //Монетки :D
@@ -168,7 +168,7 @@ bot.on("message", (msg) => {
       }
     })
   })
-
+  }
 });
 //Выдача роли когда кто-то вступает и приветствие
 bot.on('guildMemberAdd', (member) => {
