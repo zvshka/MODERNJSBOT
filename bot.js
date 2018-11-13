@@ -99,32 +99,32 @@ bot.on("ready", () => {
 })
 
 //Исполнение команд
-bot.on("message", (message) => {
+bot.on("message", msg => {
   //Проверка на то что создатель сообщения бот и канал DM
-  if (message.author.bot) return
-  if (message.channel.type === "dm") return;
+  if (msg.author.bot) return
+  if (msg.channel.type === "dm") return;
 
   //Монетки :D
 
-  message.guild.fetchMember(message.author).then(m => console.log(`[log]${message.guild.name}: ${m.displayName}: ${message}`))
+  msg.guild.fetchMember(msg.author).then(m => console.log(`[log]${msg.guild.name}: ${m.displayName}: ${msg}`))
 
   function cmdrun(prefix) {
-    if (!message.content.startsWith(prefix)) return;
-    if (cooldown.has(message.author.id)) {
-      message.delete();
-      return message.reply("Подожди 5 секунд.")
+    if (!msg.content.startsWith(prefix)) return;
+    if (cooldown.has(msg.author.id)) {
+      msg.delete();
+      return msg.reply("Подожди 5 секунд.")
     }
-    if (!message.member.hasPermission("ADMINISTRATOR")) {
-      cooldown.add(message.author.id);
+    if (!msg.member.hasPermission("ADMINISTRATOR")) {
+      cooldown.add(msg.author.id);
     }
 
-    let messageArray = message.content.split(" ");
+    let messageArray = msg.content.split(" ");
     let cmd = messageArray[0].toLocaleLowerCase();
     let args = messageArray.slice(1);
 
     let commandfile = bot.commands.get(cmd.slice(prefix.length));
     if (commandfile) {
-      commandfile.run(bot, message, args);
+      commandfile.run(bot, msg, args);
     } else {
       let coinAmt = Math.floor(Math.random() * 10) + 100;
       let baseAmt = Math.floor(Math.random() * 10) + 100;
@@ -133,16 +133,16 @@ bot.on("message", (message) => {
           useNewUrlParser: true
         }).then(res => {
           Coins.findOne({
-            UserID: message.author.id,
-            ServerID: message.guild.id,
+            UserID: msg.author.id,
+            ServerID: msg.guild.id,
           }, (err, money) => {
             if (err) {
               console.log(err)
             }
             if (!money) {
               const newMoney = new Coins({
-                UserID: message.author.id,
-                ServerID: message.guild.id,
+                UserID: msg.author.id,
+                ServerID: msg.guild.id,
                 money: coinAmt,
               })
               newMoney.save().catch(err => console.log(err.stack))
@@ -154,18 +154,18 @@ bot.on("message", (message) => {
         })
 
         let coinEmbed = new Discord.RichEmbed()
-          .setAuthor(message.author.username)
+          .setAuthor(msg.author.username)
           .setColor("#3de2fa")
           .addField("💸", `${coinAmt} монет добавлено!`);
 
-        message.channel.send(coinEmbed).then(msg => {
+        msg.channel.send(coinEmbed).then(msg => {
           msg.delete(5000)
         });
       }
     }
 
     setTimeout(() => {
-      cooldown.delete(message.author.id)
+      cooldown.delete(msg.author.id)
     }, cdseconds * 1000)
   }
 
@@ -174,14 +174,14 @@ bot.on("message", (message) => {
     useNewUrlParser: true
   }).then(res => {
     Options.findOne({
-      ServerID: message.guild.id
+      ServerID: msg.guild.id
     }, (err, opts) => {
       if (err) {
         console.log(err.stack)
       }
       if (!opts) {
         const newOpts = new Options({
-          ServerID: message.guild.id,
+          ServerID: msg.guild.id,
           Prefix: botconfig.prefix,
           AutoRole: "off"
         })
