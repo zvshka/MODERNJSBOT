@@ -28,7 +28,7 @@ bot.on('message', msg => {
     if (!msg.member.hasPermission("ADMINISTRATOR")) {
       cooldown.add(msg.author.id);
     }
-    let args = msg.content.slice(prefix.length).split(' ').trim()
+    let args = msg.content.slice(prefix.length).split(' ')
     console.log(args)
     let cmd = args.shift().toLowerCase();
     try {
