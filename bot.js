@@ -65,29 +65,25 @@ bot.on("ready", () => {
   let serverdb = db.connect(process.env.SERVERSDB, {
     useNewUrlParser: true
   }).then(res => {
-    bot.guilds.forEach(guild => {
+    bot.guilds.forEach((guild) => {
       Options.findOne({
         ServerID: guild.id
       }, (err, opts) => {
         if (err) {
           console.log(err.stack)
         }
+        if (!opts) {
+          const newGuild = new Options({
+            ServerID: guild.id,
+            Prefix: "!",
+            AutoRole: "off"
+          })
+          newGuild.save().catch(err => console.log(err.stack))
+        }
         try {
           guild.members.get(bot.user.id).setNickname(`[${opts.Prefix}] ${guild.members.get(bot.user.id).displayName.slice(4)}`)
         } catch (e) {
           console.log(e.stack)
-        }
-        if(!opts) {
-          try {
-            const newGuild = new Options({
-              ServerID: guild.id,
-              Prefix: "!",
-              AutoRole: "off"
-            })
-            newGuild.save().catch(err => console.log(err.stack))
-          } catch(err) {
-            console.log(err.stack)
-          }
         }
       })
     })
