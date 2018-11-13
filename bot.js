@@ -106,6 +106,10 @@ bot.on("message", msg => {
 
   //Монетки :D
 
+  let messageArray = msg.content.split(" ");
+  let cmd = messageArray[0].toLocaleLowerCase();
+  let args = messageArray.slice(1);
+
   msg.guild.fetchMember(msg.author).then(m => console.log(`[log]${msg.guild.name}: ${m.displayName}: ${msg}`))
 
   function cmdrun(prefix) {
@@ -117,10 +121,6 @@ bot.on("message", msg => {
     if (!msg.member.hasPermission("ADMINISTRATOR")) {
       cooldown.add(msg.author.id);
     }
-
-    let messageArray = msg.content.split(" ");
-    let cmd = messageArray[0].toLocaleLowerCase();
-    let args = messageArray.slice(1);
 
     let commandfile = bot.commands.get(cmd.slice(prefix.length));
     if (commandfile) {
