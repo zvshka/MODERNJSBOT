@@ -1,9 +1,7 @@
 //Вызов пакетов
 const botconfig = require("./utils/botconfig.json");
 const Discord = require("discord.js");
-const fs = require("fs");
 const bot = new Discord.Client();
-bot.commands = new Discord.Collection();
 const join = require('./utils/memberJoined')
 const leave = require('./utils/memberLeaved')
 const kick = require('./utils/memberKicked')
@@ -17,8 +15,6 @@ let cdseconds = 5;
 const db = require('mongoose')
 const Coins = require('./models/coins.js')
 const Options = require('./models/servOpt.js')
-
-var prefix = ""
 
 //Считывание папки с командами
 
@@ -71,7 +67,7 @@ bot.on("ready", () => {
 
 //Исполнение команд
 bot.on("message", (msg) => {
-/*  if(msg) {//Проверка на то что создатель сообщения бот и канал DM
+  if(msg) {//Проверка на то что создатель сообщения бот и канал DM
   if (msg.author.bot) return
   if (msg.channel.type === "dm") return;
   //Монетки :D
@@ -169,7 +165,7 @@ bot.on("message", (msg) => {
     })
   })
   }
-*/
+
 if(msg) {
   console.log(msg, msg.content, msg.content.split(" "))
 }
