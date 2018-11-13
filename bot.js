@@ -77,6 +77,18 @@ bot.on("ready", () => {
         } catch (e) {
           console.log(e.stack)
         }
+        if(!opts) {
+          try {
+            const newGuild = new Options({
+              ServerID: guild.id,
+              Prefix: "!",
+              AutoRole: "off"
+            })
+            newGuild.save().catch(err => console.log(err.stack))
+          } catch(err) {
+            console.log(err.stack)
+          }
+        }
       })
     })
   })
