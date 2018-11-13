@@ -15,6 +15,7 @@ const Coins = require('./models/coins')
 const Options = require('./models/servOpt')
 
 bot.on('message', msg => {
+  console.log(msg.content)
   if (msg.author.bot) return
   if (msg.channel.type === "dm") return;
 
