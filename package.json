@@ -3,7 +3,7 @@
   "description": "lel",
   "main": "bot.js",
   "engines": {
-    "node": "8.12.0",
+    "node": "8.9.3",
     "npm": "6.1.0"
   },
   "scripts": {
@@ -12,10 +12,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "discord.js": "^11.4.2",
-    "dotenv": "^6.0.0",
-    "moment": "^2.22.2",
-    "mongoose": "^5.3.11",
-    "ms": "^2.1.1"
+    "discord.js": "11.4.2",
+    "dotenv": "6.0.0",
+    "moment": "2.22.2",
+    "mongoose": "5.3.11",
+    "ms": "2.1.1"
   }
 }
