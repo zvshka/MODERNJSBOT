@@ -76,10 +76,6 @@ bot.on("message", msg => {
   if (msg.channel.type === "dm") return;
   //Монетки :D
 
-  let messageArray = msg.content.split(" ");
-  let cmd = messageArray[0].toLocaleLowerCase();
-  let args = messageArray.slice(1);
-
   msg.guild.fetchMember(msg.author).then(m => console.log(`[log]${msg.guild.name}: ${m.displayName}: ${msg}`))
 
   function cmdrun(prefix) {
@@ -91,9 +87,10 @@ bot.on("message", msg => {
     if (!msg.member.hasPermission("ADMINISTRATOR")) {
       cooldown.add(msg.author.id);
     }
-
+    let args = msg.content.slice(prefix.length).trim().split(' ')
+    let cmd = args.shift().toLowerCase();
     try {
-      let commandfile = require(`./commands/${cmd.slice(1)}`)
+      let commandfile = require(`./commands/${cmd}`)
       if (commandfile) {
         commandfile.run(bot, msg, args);
       } else {
