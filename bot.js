@@ -19,7 +19,7 @@ bot.on('message', msg => {
   if (msg.author.bot) return
   if (msg.channel.type === "dm") return;
 
-  function cmdrun(prefix) {
+//  function cmdrun(prefix) {
     if (!msg.content.startsWith(prefix)) return;
     if (cooldown.has(msg.author.id)) {
       msg.delete();
@@ -28,7 +28,7 @@ bot.on('message', msg => {
     if (!msg.member.hasPermission("ADMINISTRATOR")) {
       cooldown.add(msg.author.id);
     }
-    let args = (((msg.content).slice(prefix.length)).trim()).split('')
+    let args = (((msg.content).slice(prefix.length)).trim()).split(' ')
     console.log(args)
     let cmd = args.shift().toLowerCase();
     try {
@@ -81,7 +81,7 @@ bot.on('message', msg => {
     } catch (err) {
       console.log(err)
     }
-  }
+//  }
   //Опять префикс
   let serverdb = db.connect(process.env.SERVERSDB, {
     useNewUrlParser: true
@@ -99,10 +99,10 @@ bot.on('message', msg => {
           AutoRole: "off"
         })
         newOpts.save().catch(err => console.log(err.stack))
-        cmdrun(newOpts.Prefix)
+        //cmdrun(newOpts.Prefix)
       } else {
         try {
-          cmdrun(opts.Prefix)
+          //cmdrun(opts.Prefix)
         } catch (e) {
           console.log(err)
         }
