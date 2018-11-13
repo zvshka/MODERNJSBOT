@@ -23,7 +23,7 @@ var prefix = ""
 //Считывание папки с командами
 fs.readdir("./commands/", (err, files) => {
 
-  if (err) console.log(err);
+  //if (err) console.log(err);
   let jsfile = files.filter(f => f.split(".").pop() === "js");
   if (jsfile.length <= 0) {
     console.log("не найдены команды.");
