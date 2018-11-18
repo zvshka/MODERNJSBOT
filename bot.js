@@ -42,10 +42,7 @@ function prefix(id) {
 
 }
 
-bot.on('message', async msg => {
-  let fetch = await prefix(msg.guild.id)
-
-  console.log(fetch)
+bot.on('message', msg => {
 
   if (msg.author.bot) return
   if (msg.channel.type === "dm") return;
