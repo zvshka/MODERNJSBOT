@@ -55,7 +55,13 @@ bot.on('message', msg => {
   if (!msg.member.hasPermission("ADMINISTRATOR")) {
     cooldown.add(msg.author.id);
   }
-  let args = msg.content.slice(botconfig.prefix.length).trim().split(/ +/g);
+  try {
+    var args = msg.content.slice(botconfig.prefix.length).trim().split(/ +/g);
+  } catch (e) {
+    if (e) {
+      console.log(e.stack)
+    }
+  }
   let cmd = args.shift().toLowerCase()
   try {
     let commandfile = require(`./commands/${cmd}`)
