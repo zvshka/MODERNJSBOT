@@ -3,7 +3,7 @@ const errors = require("../utils/errors.js");
 const fs = require('fs')
 const db = require('mongoose')
 const Options = require('../models/servOpt.js')
-db.connect(process.env.SERVERSDB, {
+db.connect(process.env.DB, {
     useNewUrlParser: true
 })
 module.exports.run = (bot, message, args) => {

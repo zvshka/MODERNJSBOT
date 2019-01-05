@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 
-module.exports.run =   (bot, message, args) => {
+module.exports.run = (bot, message, args) => {
     let sicon = message.guild.iconURL;
     let serverembed = new Discord.RichEmbed()
     .setDescription("О сервере")

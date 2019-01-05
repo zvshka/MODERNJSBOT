@@ -3,7 +3,7 @@ const fs = require("fs");
 const botconfig = require('../utils/botconfig.json');
 const db = require('mongoose')
 const Options = require('../models/servOpt.js')
-db.connect(process.env.SERVERSDB, {
+db.connect(process.env.DB, {
   useNewUrlParser: true
 })
 module.exports.run = (bot, message, args) => {

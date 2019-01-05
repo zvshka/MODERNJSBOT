@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const fs = require("fs");
 const db = require('mongoose')
 const Options = require('../models/servOpt.js')
-db.connect(process.env.SERVERSDB, {
+db.connect(process.env.DB, {
   useNewUrlParser: true
 })
 module.exports.run = (bot, message, args) => {
@@ -16,15 +16,15 @@ module.exports.run = (bot, message, args) => {
       console.log(err)
     }
     try {
-      let testembed = new Discord.RichEmbed()
+      let setemb = new Discord.RichEmbed()
         .addField("Префикс", opts.Prefix, true)
         .addField("Log-канал", logs, true)
         .addField("autorole", opts.AutoRole, true)
         .setThumbnail(bot.user.avatarURL)
         .addField("Владелец сервера", message.guild.owner, true)
-      message.channel.send(testembed)
+      message.channel.send(setemb)
     } catch (e) {
-      console.log(e.stack)
+      console.log("нет в бд")
     }
   })
 }

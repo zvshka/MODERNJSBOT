@@ -1,8 +1,8 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 const db = require('mongoose')
-const Coins = require("../models/coins.js")
-db.connect(process.env.USERSDB, {
+const user = require("../models/user.js")
+db.connect(process.env.DB, {
   useNewUrlParser: true
 })
 module.exports.run = (bot, message, args) => {
@@ -15,7 +15,7 @@ module.exports.run = (bot, message, args) => {
 
   if (!args[1]) return message.reply('Не указанно кол-во монет')
 
-  Coins.findOne({
+  user.findOne({
     SeverID: message.guild.id,
     UserID: message.author.id
   }, (err, user1) => {
@@ -23,7 +23,7 @@ module.exports.run = (bot, message, args) => {
       console.log(err.stack)
     }
     if (user1) {
-      Coins.findOne({
+      user.findOne({
         SeverID: message.guild.id,
         UserID: pUser.id
       }, (err, user2) => {
@@ -39,10 +39,11 @@ module.exports.run = (bot, message, args) => {
             msg.delete(5000)
           });
         } else if (user1.money >= args[0]) {
-          const newUser2 = new Coins({
+          const newUser2 = new user({
             SeverID: message.guild.id,
             UserID: pUser.id,
-            money: 0 + parseInt(args[0])
+            Money: 0 + parseInt(args[0]),
+            Warns: 0
           })
           newUser2.save().catch(err => console.log(err.stack))
           user1.money = user1.money - parseInt(args[0])
@@ -62,10 +63,11 @@ module.exports.run = (bot, message, args) => {
         }
       })
     } else {
-      const newUser1 = new Coins({
+      const newUser1 = new user({
         SeverID: message.guild.id,
         User: message.author.id,
-        money: 0
+        Money: 0,
+        Warns: 0
       })
       newUser1.save().catch(err => console.log(err.stack))
       message.channel.send({
