@@ -7,3 +7,4 @@ commands/multicolors.js
 commands/voting.js
 site/
 utils/packages.js
+.env

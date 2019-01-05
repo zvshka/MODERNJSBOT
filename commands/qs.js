@@ -81,7 +81,8 @@ module.exports.run = (bot, message, args) => {
         collector.on('collect', message => {
             for (var i = 0; i <= answers.length; i++) {
                 if (message.content.toLowerCase() === `вопрос ${i}`) {
-                    message.channel.send(`${answers[i - 1]}`)
+                  message.delete()  
+                  message.channel.send(`${answers[i - 1]}`).then(msg => msg.delete(5000))
                 }
             }
         })

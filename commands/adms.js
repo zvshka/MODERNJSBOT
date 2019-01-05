@@ -6,7 +6,7 @@ module.exports.run = async (bot, message, args) => {
     let adembed = new Discord.RichEmbed()
     let adroles = message.guild.roles.array()
     let admember = message.guild.members.array()
-    for (i in admember) {
+    for (let i in admember) {
         for (let j in adroles) {
             if (adroles[j].name === "Administrator") {
                 if (admember[i].roles.has(adroles[j].id)) {

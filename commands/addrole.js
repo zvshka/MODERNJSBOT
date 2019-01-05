@@ -5,10 +5,6 @@ module.exports.run = async (bot, message, args) => {
 
   //!addrole @andrew Dog Person
   if (!message.member.hasPermission("MANAGE_ROLES")) return errors.noPerms(message, "MANAGE_ROLES");
-  if (args[0] == "help") {
-    message.reply("Использование: !addrole <user> <role>").then(msg => {msg.delete(5000)});
-    return;
-  }
   let rMember = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
   if (!rMember) return errors.cantfindUser(message.channel);
   let role = args.join(" ").slice(22);
@@ -23,7 +19,7 @@ module.exports.run = async (bot, message, args) => {
     await rMember.send(`Роль выдана ${gRole.name}`)
   } catch (e) {
     console.log(e.stack);
-    message.channel.send(`Роль выдана <@${rMember.id}>, была выдана роль ${gRole.name}. Личка закрыта.`)
+    message.channel.send(`Роль выдана <@${rMember.id}>. Личка закрыта.`)
   }
 }
 

@@ -3,9 +3,9 @@ const fs = require("fs");
 const ms = require("ms");
 const errors = require('../utils/errors')
 const db = require('mongoose')
-const Warns = require("../models/warns.js")
+const user = require("../models/user.js")
 
-db.connect(process.env.USERSDB, {
+db.connect(process.env.DB, {
   useNewUrlParser: true
 })
 module.exports.run = (bot, message, args) => {
@@ -13,7 +13,7 @@ module.exports.run = (bot, message, args) => {
     msg.delete(5000)
   });
 
-  let wUser = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0])
+  let wUser = message.guild.member(message.mentions.users.first())
 
   if (!wUser) return message.channel.send({
     embed: {
@@ -29,25 +29,26 @@ module.exports.run = (bot, message, args) => {
       color: 0x00a8ff,
       fields: [{
         name: "Ошибка",
-        value: "Не указанн человек"
+        value: "Без причины"
       }]
     }
   })
 
-  Warns.findOne({
+  user.findOne({
     UserID: wUser.id,
     ServerID: message.guild.id,
-  }, (err, warn) => {
+  }, (err, data) => {
     if (err) {
       console.log(err)
     }
-    if (!warn) {
-      const newWarns = new Warns({
+    if (!data) {
+      const newData = new user({
         UserID: wUser.id,
         ServerID: message.guild.id,
-        warns: 1,
+        Money: 0,
+        Warns: 1,
       })
-      newWarns.save().catch(err => console.log(err))
+      newData.save().catch(err => console.log(err))
       
       let warnEmbed = new Discord.RichEmbed()
         .setDescription("Warns")
@@ -55,7 +56,7 @@ module.exports.run = (bot, message, args) => {
         .setColor("#fc6400")
         .addField("Заварнен", `<@${wUser.id}>`)
         .addField("Заварнен в", message.channel)
-        .addField("Варнов", newWarns.warns)
+        .addField("Варнов", newData.warns)
         .addField("Причина", reason)
         .setFooter(`${message.author.username}`, message.author.avatarURL)
       let warnchannel = message.guild.channels.find(c => c.name === "logs");
@@ -66,8 +67,8 @@ module.exports.run = (bot, message, args) => {
       message.delete()
       warnchannel.send(warnEmbed);
     } else {
-      warn.warns += 1
-      warn.save().catch(err => console.log(err.stack))
+      user.Warns += 1
+      user.save().catch(err => console.log(err.stack))
 
       let warnEmbed = new Discord.RichEmbed()
         .setDescription("Warns")
@@ -75,7 +76,7 @@ module.exports.run = (bot, message, args) => {
         .setColor("#fc6400")
         .addField("Заварнен", `<@${wUser.id}>`)
         .addField("Заварнен в", message.channel)
-        .addField("Варнов", warn.warns)
+        .addField("Варнов", user.Warns)
         .addField("Причина", reason)
         .setFooter(`${message.author.username}`, message.author.avatarURL)
       let warnchannel = message.guild.channels.find(c => c.name === "logs");
