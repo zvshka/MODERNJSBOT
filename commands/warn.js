@@ -22,7 +22,6 @@ module.exports.run = (bot, message, args) => {
     }
   });
 
-
   let reason = args.join(" ").slice(22);
   if (!reason) return message.channel.send({
     embed: {
@@ -56,7 +55,7 @@ module.exports.run = (bot, message, args) => {
         .setColor("#fc6400")
         .addField("Заварнен", `<@${wUser.id}>`)
         .addField("Заварнен в", message.channel)
-        .addField("Варнов", newData.warns)
+        .addField("Варнов", newData.Warns)
         .addField("Причина", reason)
         .setFooter(`${message.author.username}`, message.author.avatarURL)
       let warnchannel = message.guild.channels.find(c => c.name === "logs");

@@ -18,7 +18,6 @@ module.exports.run = async (bot, message, args) => {
   try {
     await rMember.send(`Роль выдана ${gRole.name}`)
   } catch (e) {
-    console.log(e.stack);
     message.channel.send(`Роль выдана <@${rMember.id}>. Личка закрыта.`)
   }
 }
