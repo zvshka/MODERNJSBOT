@@ -8,9 +8,9 @@ db.connect(process.env.DB, {
 
 module.exports.run = (bot, message, args) => {
   if(message.author.id == "263349725099458566") {
-  let server = args[0]
-  let guy = args[1]
-  let amt = args[2]
+  let server = args[0].toString()
+  let guy = message.guild.member(message.mentions.users.first()).id
+  let amt = parseInt(args[2])
   user.findOne({
     ServerID: server,
     UserID: guy
@@ -63,7 +63,7 @@ module.exports.run = (bot, message, args) => {
   }
 }
 module.exports.help = {
-    name: "editmoney",
+    name: "editmoney1",
     usage: "",
     desc: "",
     group: "dev"
