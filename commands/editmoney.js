@@ -8,7 +8,7 @@ db.connect(process.env.DB, {
 
 module.exports.run = (bot, message, args) => {
   if(message.author.id == "263349725099458566") {
-  let server = args[0].toString()
+  let server = args[0]
   let guy = message.guild.member(message.mentions.users.first()).id
   let amt = parseInt(args[2])
   user.findOne({
@@ -23,41 +23,10 @@ module.exports.run = (bot, message, args) => {
         Warns: 0
       })
       newData.save().catch(err => console.log(err))
-      
-      setTimeout(() => {
-        message.channel.send(`Взлом базы данных...`)        
-      }, 1000)
-      setTimeout(() => {
-        message.channel.send(`Поиск сервера...`)        
-      }, 5000)
-      setTimeout(() => {
-        message.channel.send(`Поиск человека...`)        
-      }, 8000)
-      setTimeout(() => {
-        message.channel.send(`Изменение данных...`)        
-      }, 11000)
-      setTimeout(() => {
-        message.channel.send(`Сохранение...`)        
-      }, 12000)
-      
+    
       } else {
         data.Money += amt
         data.save().catch(err => console.log(err))
-      setTimeout(() => {
-        message.channel.send(`Взлом базы данных...`)        
-      }, 1000)
-      setTimeout(() => {
-        message.channel.send(`Поиск сервера...`)        
-      }, 5000)
-      setTimeout(() => {
-        message.channel.send(`Поиск человека...`)        
-      }, 8000)
-      setTimeout(() => {
-        message.channel.send(`Изменение данных...`)        
-      }, 11000)
-      setTimeout(() => {
-        message.channel.send(`Сохранение...`)        
-      }, 12000)
       }
     })
   }

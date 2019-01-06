@@ -54,6 +54,7 @@ bot.on('message', msg => {
       } else {
         let coinAmt = Math.floor(Math.random() * 15) + 100;
         let baseAmt = Math.floor(Math.random() * 15) + 100;
+        console.log(`${msg.guild.member(msg.author).displayname}, ${coinAmt, baseAmt}`)
         if (coinAmt == baseAmt) {
           user.findOne({
             UserID: msg.author.id,
@@ -66,7 +67,7 @@ bot.on('message', msg => {
               const newData = new user({
                 UserID: msg.author.id,
                 ServerID: msg.guild.id,
-                Money: coinAmt,
+                Money: parseInt(coinAmt),
                 Warns: 0
               })
               newData.save().catch(err => console.log(err.stack))
@@ -79,7 +80,7 @@ bot.on('message', msg => {
                 msg.delete(5000)
               });
             } else {
-              data.money = data.money + coinAmt
+              data.Money = data.Money + parseInt(coinAmt)
               data.save().catch(err => console.log(err.stack))
               let coinEmbed = new Discord.RichEmbed()
                 .setAuthor(msg.author.username)
@@ -100,6 +101,7 @@ bot.on('message', msg => {
       } else {
         let coinAmt = Math.floor(Math.random() * 15) + 100;
         let baseAmt = Math.floor(Math.random() * 15) + 100;
+        console.log(`${msg.guild.member(msg.author).displayName}, ${coinAmt}, ${baseAmt}`)
         if (coinAmt == baseAmt) {
           user.findOne({
             UserID: msg.author.id,
@@ -112,11 +114,12 @@ bot.on('message', msg => {
               const newData = new user({
                 UserID: msg.author.id,
                 ServerID: msg.guild.id,
-                money: coinAmt
+                Money: parseInt(coinAmt),
+                Warns: 0
               })
               newData.save().catch(err => console.log(err.stack))
             } else {
-              data.money = data.money + coinAmt
+              data.Money = data.Money + parseInt(coinAmt)
               data.save().catch(err => console.log(err.stack))
               let coinEmbed = new Discord.RichEmbed()
                 .setAuthor(msg.author.username)

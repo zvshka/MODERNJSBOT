@@ -9,7 +9,6 @@ db.connect(process.env.DB, {
 })
 
 module.exports.run = (bot, message, args) => {
-  console.log(message, message.content)
   if (!args.join(" ")) {
     let categories = []
     for (var i in items) {
@@ -33,12 +32,13 @@ module.exports.run = (bot, message, args) => {
   } else {
     let itemName = '';
     let itemPrice = 0;
+    let itemType = '';
 
     for (var i in items) {
-      console.log(items[i], items)
       if (args.join(' ').trim().toLowerCase() === items[i].name.toLowerCase()) {
         itemName = items[i].name
         itemPrice = items[i].price
+        itemType = items[i].type
       }
     }
     if (itemName === '') {
@@ -63,6 +63,28 @@ module.exports.run = (bot, message, args) => {
         data.Money -= itemPrice
         data.save().catch(err => console.log(err))
         message.channel.send(`**Вы купили ${args.join(' ').trim()}**`)
+        if(itemType == 'Roles') {
+          let toaddmem = message.guild.member(message.author)
+          let role = message.guild.roles.find(r => r.name === itemName)
+          if (toaddmem.roles.has(role.id)) {
+            return message.reply("Роль имеется.");
+          } else {
+            toaddmem.addRole(role.id)
+          }
+        } else if(itemType == 'Resource') {
+          message.author.send(`**Напиши в лс главе клана и прикрепи скрин покупки**`)
+        } else if(itemType == 'Nick') {
+          const collector = new Discord.MessageCollector(message.channel, m => m.author.id === message.author.id, {
+              time: 60000
+          });
+          message.channel.send(`**Отправь желаемый никнейм в чат. У тебя 60 секунд**`).then(msg => msg.delete(60000))
+          collector.on('collect', msg => {
+            let nick = msg.content
+            let tochange = message.guild.member(message.author)
+            tochange.setNickname(nick)
+            collector.stop()
+          })
+        }
       }
     })
 

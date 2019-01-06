@@ -11,55 +11,47 @@ module.exports.run = (bot, message, args) => {
 
   if (!pUser) return message.reply(`ничего не указанно`).then(msg => {
     msg.delete(5000)
-  })
+  });
 
-  if (!args[1]) return message.reply('Не указанно кол-во монет')
+  if (!args[1]) return message.reply('Не указанно кол-во монет');
 
   user.findOne({
     SeverID: message.guild.id,
     UserID: message.author.id
-  }, (err, user1) => {
+  }, (err, data1) => {
     if (err) {
       console.log(err.stack)
     }
-    if (user1) {
+    if (data1) {
       user.findOne({
         SeverID: message.guild.id,
         UserID: pUser.id
-      }, (err, user2) => {
+      }, (err, data2) => {
         if (err) {
           console.log(err.stack)
         }
-        if (user2) {
-          user2.money = user2.money + parseInt(args[0])
-          user2.save().catch(err => console.log(err.stack))
-          user1.money = user1.money - parseInt(args[0])
-          user1.save().catch(err => console.log(err.stack))
-          message.channel.send(`${message.author} дал ${pUser} ${args[1]} монет.`).then(msg => {
-            msg.delete(5000)
-          });
-        } else if (user1.money >= args[0]) {
-          const newUser2 = new user({
-            SeverID: message.guild.id,
-            UserID: pUser.id,
-            Money: 0 + parseInt(args[0]),
-            Warns: 0
-          })
-          newUser2.save().catch(err => console.log(err.stack))
-          user1.money = user1.money - parseInt(args[0])
-          user1.save().catch(err => console.log(err.stack))
-          message.channel.send(`${message.author} дал ${pUser} ${args[1]} монет.`).then(msg => {
-            msg.delete(5000)
-          });
-        } else if (user1.money < args[0]) {
-          message.channel.send({
+        if (data2) {
+          if(data1.Money >= parseInt(args[1])) {
+            data1.Money = data1.Money - parseInt(args[1])
+            data1.save().catch(err => console.log(err))
+            data2.Money = data2.Money + parseInt(args[1])
+            data2.save().catch(err => console.log(err))
+            message.channel.send({embed: {
+              fields: [{
+                name: "Успех",
+                value: `<@${message.author}> передал <@${pUser}> ${args[1]} монет`
+              }]
+            }})
+          } else {
+            message.channel.send({
             embed: {
               fields: [{
                 name: "**Error**",
                 value: "У вас не хватает монет"
-              }]
-            }
-          })
+          }]
+        }
+      })
+          }
         }
       })
     } else {
