@@ -1,26 +1,44 @@
 {
-    "Test4": {
-    "name":"Test4",
-    "type":"Test4",
-    "price":"1",
-    "desc":"for test"
+    "CN": {
+    "name":"Nick",
+    "type":"Nick",
+    "price":"100",
+    "desc":"Сменить ник"
   },
-    "Test3": {
-    "name":"test3",
-    "type":"Test3",
-    "price":"1",
-    "desc":"for test"
+    "OldRole": {
+    "name":"Старички",
+    "type":"Roles",
+    "price":"10000",
+    "desc":"Роль старичок"
   },
-    "Test2": {
-    "name":"Test2",
-    "type":"Test2",
-    "price":"1",
-    "desc":"for test"
+    "Ultimate": {
+    "name":"Ultimatki",
+    "type":"Resource",
+    "price":"100000",
+    "desc":"16 ультиматок"
   },
-    "test1":{
-    "name":"test1",
-    "type":"Test1",
-    "price":"1",
-    "desc":"for test"
+    "Starter Pack":{
+    "name":"Starter Pack",
+    "type":"Resource",
+    "price":"5000",
+    "desc":"Начальная экипировка"
+  },
+  "VIP":{
+    "name":"VIP",
+    "type":"Roles",
+    "price":"300000",
+    "desc":"Роль дающая особые права например практически неограничено получать ресурсы из кланового дома"
+  },
+  "VIP+":{
+    "name":"VIP+",
+    "type":"Roles",
+    "price":"400000",
+    "desc":"Роль дающая особые права например практически неограничено получать ресурсы из кланового дома"
+  },
+  "VIP++":{
+    "name":"VIP++",
+    "type":"Roles",
+    "price":"600000",
+    "desc":"Роль дающая особые права например практически неограничено получать ресурсы из кланового дома"
   }
 }

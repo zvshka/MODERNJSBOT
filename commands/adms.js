@@ -1,8 +1,7 @@
 const Discord = require("discord.js");
 const errors = require("../utils/errors.js");
 const fs = require('fs')
-const fetch = require('node-fetch')
-module.exports.run = async (bot, message, args) => {
+module.exports.run = (bot, message, args) => {
     let adembed = new Discord.RichEmbed()
     let adroles = message.guild.roles.array()
     let admember = message.guild.members.array()

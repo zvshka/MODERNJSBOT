@@ -7,7 +7,7 @@ db.connect(process.env.DB, {
 })
 module.exports.run = (bot, message, args) => {
   //!coins
-    message.delete()
+    message.delete(5000)
     user.findOne({
       UserID: message.author.id,
       ServerID: message.guild.id,
