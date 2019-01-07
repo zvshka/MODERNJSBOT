@@ -32,7 +32,7 @@ module.exports.run = (bot, message, args) => {
   }
 }
 module.exports.help = {
-    name: "editmoney1",
+    name: "editmoney",
     usage: "",
     desc: "",
     group: "dev"

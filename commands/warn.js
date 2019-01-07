@@ -66,8 +66,8 @@ module.exports.run = (bot, message, args) => {
       message.delete()
       warnchannel.send(warnEmbed);
     } else {
-      user.Warns += 1
-      user.save().catch(err => console.log(err.stack))
+      data.Warns += 1
+      data.save().catch(err => console.log(err.stack))
 
       let warnEmbed = new Discord.RichEmbed()
         .setDescription("Warns")
@@ -75,7 +75,7 @@ module.exports.run = (bot, message, args) => {
         .setColor("#fc6400")
         .addField("Заварнен", `<@${wUser.id}>`)
         .addField("Заварнен в", message.channel)
-        .addField("Варнов", user.Warns)
+        .addField("Варнов", data.Warns)
         .addField("Причина", reason)
         .setFooter(`${message.author.username}`, message.author.avatarURL)
       let warnchannel = message.guild.channels.find(c => c.name === "logs");
