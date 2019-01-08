@@ -50,6 +50,16 @@ bot.on('message', msg => {
       newOpts.save().catch(err => console.log(err.stack))
       let commandfile = bot.commands.get(cmd.slice((newOpts.Prefix).length));
       if (commandfile) {
+        if (cooldown.has(msg.author.id)) {
+          msg.delete();
+          return msg.reply("You have to wait 5 seconds between commands.")
+        }
+        if (!msg.member.hasPermission("ADMINISTRATOR")) {
+        cooldown.add(msg.author.id);
+        }
+        setTimeout(() => {
+          cooldown.delete(msg.author.id)
+        }, cdseconds * 1000)
         commandfile.run(bot, msg, args, newOpts.Prefix)
       } else {
         let coinAmt = Math.floor(Math.random() * 15) + 100;
@@ -97,6 +107,16 @@ bot.on('message', msg => {
     } else {
       let commandfile = bot.commands.get(cmd.slice((opts.Prefix).length));
       if (commandfile) {
+        if (cooldown.has(msg.author.id)) {
+          msg.delete();
+          return msg.reply("You have to wait 5 seconds between commands.")
+        }
+        if (!msg.member.hasPermission("ADMINISTRATOR")) {
+        cooldown.add(msg.author.id);
+        }
+        setTimeout(() => {
+          cooldown.delete(msg.author.id)
+        }, cdseconds * 1000)
         commandfile.run(bot, msg, args, opts.Prefix)
       } else {
         let coinAmt = Math.floor(Math.random() * 15) + 100;
