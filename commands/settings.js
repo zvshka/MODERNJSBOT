@@ -1,10 +1,5 @@
 const Discord = require("discord.js");
-const fs = require("fs");
-const db = require('mongoose')
 const Options = require('../models/servOpt.js')
-db.connect(process.env.DB, {
-  useNewUrlParser: true
-})
 module.exports.run = (bot, message, args) => {
   var botconfig = require('../utils/botconfig.json')
 

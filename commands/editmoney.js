@@ -1,10 +1,4 @@
-const Discord = require("discord.js");
-const errors = require("../utils/errors.js");
-const db = require('mongoose')
 const user = require('../models/user.js')
-db.connect(process.env.DB, {
-  useNewUrlParser: true
-})
 
 module.exports.run = (bot, message, args) => {
   if(message.author.id == "263349725099458566") {

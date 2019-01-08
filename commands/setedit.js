@@ -1,9 +1,5 @@
 const Discord = require("discord.js");
-const db = require('mongoose')
 const Options = require('../models/servOpt.js')
-db.connect(process.env.DB, {
-  useNewUrlParser: true
-})
 
 module.exports.run = (bot, message, args) => {
   if(args[0].toLowerCase() == "logs") {

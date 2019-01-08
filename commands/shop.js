@@ -1,12 +1,7 @@
 const Discord = require("discord.js");
-const errors = require("../utils/errors.js");
 const fs = require('fs')
 const items = JSON.parse(fs.readFileSync('./utils/items.json', 'utf8'))
-const db = require('mongoose')
 const user = require('../models/user.js')
-db.connect(process.env.DB, {
-  useNewUrlParser: true
-})
 
 module.exports.run = (bot, message, args) => {
   if (!args.join(" ")) {

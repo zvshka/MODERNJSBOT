@@ -1,10 +1,5 @@
 const Discord = require("discord.js");
-const fs = require('fs');
-const db = require('mongoose')
 const user = require("../models/user.js")
-db.connect(process.env.DB, {
-  useNewUrlParser: true
-})
 module.exports.run = (bot, message, args) => {
   //!coins
     message.delete(5000)

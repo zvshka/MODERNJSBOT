@@ -1,10 +1,8 @@
 const Discord = require("discord.js");
-const errors = require("../utils/errors.js");
 const fs = require('fs')
 const commands = JSON.parse(fs.readFileSync("./utils/help.json", "utf8"));
 
-
-module.exports.run = async (bot, message, args, prefix) => {
+module.exports.run = (bot, message, args, prefix) => {
     if (args.length == 0) {
         const embed = new Discord.RichEmbed()
             .setColor(0x1D82B6) // You can set this color to whatever you want.

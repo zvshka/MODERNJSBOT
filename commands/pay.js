@@ -1,8 +1,4 @@
-const db = require('mongoose')
 const user = require("../models/user.js")
-db.connect(process.env.DB, {
-  useNewUrlParser: true
-})
 module.exports.run = (bot, message, args) => {
   //!pay @isatisfied 59345
   let pUser = message.guild.member(message.mentions.users.first());

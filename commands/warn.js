@@ -1,13 +1,7 @@
 const Discord = require("discord.js");
-const fs = require("fs");
 const ms = require("ms");
 const errors = require('../utils/errors')
-const db = require('mongoose')
 const user = require("../models/user.js")
-
-db.connect(process.env.DB, {
-  useNewUrlParser: true
-})
 module.exports.run = (bot, message, args) => {
   if (!message.member.hasPermission("ADMINISTRATOR")) return errors.noPerms(message, "ADMINISTRATOR").then(msg => {
     msg.delete(5000)

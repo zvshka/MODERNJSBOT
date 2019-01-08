@@ -10,7 +10,7 @@ module.exports.run = (bot, message, args) => {
   if (args[0].toLowerCase() === 'total') {
     let toclear = message.channel
     toclear.delete()
-    message.guild.createChannel(`${toclear.name}`, `text`)
+    message.guild.createChannel(`${toclear.name}`, `text`, )
       .then(chnl => {
         chnl.setParent(toclear.parent.id)
         chnl.setPosition(`${toclear.position}`)
@@ -22,7 +22,8 @@ module.exports.run = (bot, message, args) => {
             }]
           }
         }).then(msg => msg.delete(15000))
-      })
+        chnl.overwritePermissions()
+      }) 
   } else {
     message.channel.bulkDelete(args[0], true).then(() => {
       message.channel.send({
