@@ -2,7 +2,7 @@ const errors = require("../utils/errors.js");
 const ms = require("ms");
 
 module.exports.run = async (bot, message, args) => {
-    if (!message.member.hasPermission("MANAGE_MESSAGES")) return errors.noPerms(message, "MANAGE_MESSAGES");
+    if (!message.guild.member(message.author).hasPermission("MANAGE_MESSAGES")) return errors.noPerms(message, "MANAGE_MESSAGES");
     let tomute = message.guild.member(message.mentions.users.first());
     if (!tomute) return message.reply("Нет таких.");
     if (tomute.hasPermission("MANAGE_MESSAGES")) return message.reply("Нельзя");
