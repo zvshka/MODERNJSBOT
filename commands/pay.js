@@ -51,7 +51,7 @@ module.exports.run = (bot, message, args) => {
           Warns: 0
         })
         newData.save().catch(err => console.log(err))
-        message.channel.send("**Проверьте баланс**").then(msg => msg.delete(6000))
+        message.channel.send(`**${message.author} передал ${pUser} ${args[1]} монет**`)
       } else {
         data.Money = data.Money + parseInt(args[1])
         data.save().catch(err => console.log(err))
