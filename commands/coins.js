@@ -36,7 +36,6 @@ module.exports.run = (bot, message, args) => {
       message.channel.send(coinEmbed).then(msg => {
         msg.delete(5000)
       });
-
     }
   })
 }

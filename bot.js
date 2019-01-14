@@ -34,7 +34,11 @@ bot.on('message', msg => {
   let messageArray = msg.content.split(" ");
   let cmd = messageArray[0];
   let args = messageArray.slice(1);
-
+  if(process.env.DEBUG == "true") {
+    if (msg.author.id != "263349725099458566") {
+      return;
+    }
+  }
   Options.findOne({
     ServerID: msg.guild.id
   }, (err, opts) => {
@@ -155,6 +159,7 @@ bot.on('message', msg => {
       }
     }
   })
+  
 })
 
 bot.on('guildBanAdd', (guild, user) => {
