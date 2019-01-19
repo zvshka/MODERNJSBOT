@@ -10,7 +10,7 @@ module.exports.run = async (bot, message, args) => {
     let roles = []
     let muterole = message.guild.roles.find(r => r.name === "muted");
     let mutetime = args[1];
-    if (!mutetime) return message.reply("Не указанно время");
+    if (!mutetime || NaN(args[1])) return message.reply("Не указанно время");
     if (!muterole) {
         try {
             muterole = await message.guild.createRole({
@@ -35,7 +35,6 @@ module.exports.run = async (bot, message, args) => {
         roles.push(role.id)
         tolock.removeRole(role.id)
     });
-    console.log(roles)
     await tolock.addRole(muterole.id)
     await message.channel.send(`${tolock} залочен на ${args[1]}`)
     setTimeout(() => {
